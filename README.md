@@ -12,3 +12,4 @@ The images are generated using Stable Diffusion and DALL-E.
 - Create React App
 
 The project starts on 9/8 2023 and the repository is created on 1/1 2024.
+Update 1/5: I recreated this after learning git commands. 
