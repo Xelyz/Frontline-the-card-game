@@ -1,25 +1,53 @@
-import logo from './logo.svg';
-import './App.css';
+import { Client } from 'boardgame.io/react';
+import { CardBoard } from './Board';
+import { Cardgame } from './Game';
+import { Local } from 'boardgame.io/multiplayer';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import HomePage from './Homepage';
+import JoinPage from './Joinpage';
+import Lobby from './lobby';
+import { Component } from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const Game = Client({
+  game: Cardgame,
+  board: CardBoard,
+  seed: 114514,
+  numPlayers: 2,
+  multiplayer: Local(),
+});
+
+class App extends Component{
+  // (new URLSearchParams(window.location.search)).get('playerID');
+
+  render(){ return <BrowserRouter>
+      <Routes>
+        <Route
+          path="/"
+          exact
+          element={<HomePage/>}
+        />
+        <Route
+          path="/join"
+          exact
+          element={<JoinPage/>}
+        />
+        <Route path="/demo" exact element={<><Game playerID="0" demo="true"/><Game playerID="1" demo="true"/></>}/>
+        {/* <Route
+          path="/rematch"
+          render={(props) => <RematchLobby {...props} key={props.location.key} />}
+        /> */}
+        <Route path="/lobby/:id" element={<Lobby/>}/>
+        <Route
+          path="/public_lobby/:id"
+          element={<Lobby isPublic={true} />}
+        />
+        <Route
+          path="*"
+          element={<HomePage/>}
+        />
+      </Routes>
+    </BrowserRouter>
+  }
 }
 
 export default App;

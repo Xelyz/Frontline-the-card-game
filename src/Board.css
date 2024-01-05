@@ -1,0 +1,84 @@
+.textBox{
+    text-align: center;
+    background-color: grey;
+    background-clip: padding-box;
+    width: 250px;
+    height: fit-content;
+    padding: 20px;
+    align-self: flex-start;
+}
+
+p{
+    font-family: monospace;
+    margin: 0px;
+}
+
+.bodyPage{
+    margin: 30px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: fit-content;
+}
+
+td,.cardBox{
+    position: relative;
+    height: 120px;
+    max-height: 120px;
+    min-width: 120px;
+    width: 120px;
+    padding: 0px;
+    text-align: center;
+}
+
+.cardImg{
+    z-index: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.rightBar{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-self: flex-start;
+    height: 100%;
+    width: 130px;
+}
+
+.atk, .hp, .cost{
+    position: absolute;
+    padding: 0px 5px;
+}
+
+.atk{
+    left: 0px;
+    bottom: 0px;
+}
+
+.hp{
+    right: 0px;
+    bottom: 0px;
+}
+
+.cost{
+    right: 0px;
+    top: 0px;
+}
+
+#endTurn{
+    font-size: x-large;
+    height: 80px;
+    width: 80px;
+}
+
+#Cards{
+    display: flex;
+    width: 260px;
+    align-self: flex-start;
+    flex-wrap: wrap;
+}
+
+.cardBox{
+    margin: 3px;
+}
