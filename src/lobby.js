@@ -153,20 +153,20 @@ class Lobby extends Component {
   gameExistsView = () => {
     const players = [0, 1];
     return (
-      <>
+      <div className='text-white'>
         <div className="game-link">
           <span>
             {this.props.isPublic ? 'Public lobby text' : 'Private lobby text'}
           </span>
           <br />
           <div
-            className="game-link-box"
+            className="game-link-box text-black"
             ref={(gameLinkBox) => (this.gameLinkBox = gameLinkBox)}
           >
             {`${server}/lobby/${this.state.id}`}
           </div>
           <div className="menu-button small" onClick={this.copyToClipboard}>
-            {this.state.copied ? 'Copied️!' : ' Copy '}
+            {this.state.copied ? 'Copied!' : ' Copy '}
           </div>
         </div>
         {this.state.joined.length}{' '}
@@ -181,7 +181,7 @@ class Lobby extends Component {
             return this.getPlayerItem(joinedPlayer);
           })}
         </div>
-      </>
+      </div>
     );
   };
   gameNotFoundView = () => {
