@@ -58,7 +58,7 @@ export function CardBoard({G, ctx, moves, playerID, events}) {
           style.visibility = 'hidden'
           trapNumE++
         }
-        content = <div style={style} className='cardImg'>
+        content = <div style={style} className='cardImg rounded'>
           <p className='atk text-lg' style={{color: card.kind==="trap"?'black':card.pid===playerID?'cyan':'red'}}>{card.atk}</p>
           <p className='hp text-lg' style={{color: card.kind==="trap"?'black':card.pid===playerID?'cyan':'red'}}>{card.currHp}</p>
         </div>
@@ -66,7 +66,7 @@ export function CardBoard({G, ctx, moves, playerID, events}) {
       line.push(
         <td key={id} onClick={()=>handleClick(id)} 
           {...heroAbility[G.player[playerID].hero]}
-          className={`border-solid border-2 rounded transition-transform transform-gpu ${clicked===id?'border-[rgb(0,255,0)]':'border-[rgba(0,0,0,0.5)]'} hover:scale-[1.03]`}
+          className={`border-solid border bg-white/10 rounded transition-transform ${clicked===id?'border-[rgb(0,255,0)]':'border-neutral-600'} hover:scale-[1.03]`}
         >
           {content}
         </td>
@@ -76,14 +76,12 @@ export function CardBoard({G, ctx, moves, playerID, events}) {
   }
 
   //end turn button
-  const endTurnButton = <button id='endTurn' onClick={()=>events.endTurn()} style={{
-    backgroundColor: ctx.currentPlayer===playerID?'rgba(0,0,255,0.2)':'rgba(255,0,0,0.2)'
-  }}>End Turn</button>
+  const endTurnButton = <button id='endTurn' onClick={()=>events.endTurn()} className="bg-slate-300 rounded">{ctx.currentPlayer===playerID?"Your Turn":"Op's Turn"}</button>
 
   //Cards in hand display
   let cards = G.player[playerID].hand.map((content, id)=>
-    <div onClick={()=>handleClick(id + 16)} className={`cardBox border-solid border-2 rounded transition-transform transform-gpu ${clicked===id+16?'border-[rgb(0,255,0)]':'border-[rgba(0,0,0,0.5)]'} hover:scale-[1.03]`}>
-      <div style={{backgroundImage: content.img, backgroundSize: 'cover'}} className='cardImg'/>
+    <div onClick={()=>handleClick(id + 16)} className={`cardBox border-solid border bg-white/10 rounded transition-transform ${clicked===id?'border-[rgb(0,255,0)]':'border-neutral-600'} hover:scale-[1.03]`}>
+      <div style={{backgroundImage: content.img, backgroundSize: 'cover'}} className='cardImg rounded'/>
       <p className='atk text-lg' style={{color: 'cyan'}}>{content.atk}</p>
       <p className='hp text-lg' style={{color: 'cyan'}}>{content.hp}</p>
       <p className='cost text-lg' style={{color: 'violet'}}>{content.cost}</p>
@@ -121,7 +119,7 @@ export function CardBoard({G, ctx, moves, playerID, events}) {
   return (
   <>
     <div className='bodyPage'>
-      <table className='bg-cover my-7 ml-7 border-separate border-spacing-px'>
+      <table className='bg-cover my-7 ml-7 border-separate border-spacing-1'>
         <tbody>{board}</tbody>
       </table>
       <div className='rightBar my-auto ml-2'>
