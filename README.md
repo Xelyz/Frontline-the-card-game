@@ -1,11 +1,10 @@
-# Personal-Project-IB
-## This repository is for noting my progress on my G10 personal project.
-## Frontline -- A Card Game with 4x4 grid
+# Frontline -- A Card Game with 4x4 grid
+**This repository is for noting my progress on my G10 personal project.**
 This project is still under development. The repository is created in order to track the updates. It serves as the proof of my work. 
 
 The game cannot be installed or played yet. I'm still discovering how to use github and other stuff. 
 
-The images are generated using Stable Diffusion and DALL-E. 
+The images are generated using [Stable Diffusion](https://civitai.com/models/27259/tmnd-mix) and DALL-E. 
 
 ## Developed using:
 - boardgame.io
