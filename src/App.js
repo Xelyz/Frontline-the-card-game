@@ -32,10 +32,6 @@ class App extends Component{
           element={<JoinPage/>}
         />
         <Route path="/demo" exact element={<><Game playerID="0" demo="true"/><Game playerID="1" demo="true"/></>}/>
-        {/* <Route
-          path="/rematch"
-          render={(props) => <RematchLobby {...props} key={props.location.key} />}
-        /> */}
         <Route path="/lobby/:id" element={<Lobby/>}/>
         <Route
           path="/public_lobby/:id"
