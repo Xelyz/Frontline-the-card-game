@@ -67,7 +67,7 @@ class HomePage extends Component {
   render() {
     return (
       <>
-          <div className='text-center text-2xl pt-14' id="menu-button-wrapper">
+          <div className='text-center text-2xl mb-20 w-full fixed bottom-0 left-0 right-0'>
             <div
               className="menu-button"
               id="new-game"
