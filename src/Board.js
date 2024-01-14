@@ -89,7 +89,7 @@ export function CardBoard({G, ctx, moves, playerID, events}) {
       <p className='cost text-lg' style={{color: 'violet'}}>{content.cost}</p>
     </div>
   );
-  const handCards = <div id='Cards' className='my-7'>{cards}</div>
+  const handCards = <div id='Cards' className='mt-10'>{cards}</div>
 
   //View of Card information when it is selected
   let cardData = <div className='w-80 self-stretch my-7 box-content invisible'/>
@@ -121,15 +121,17 @@ export function CardBoard({G, ctx, moves, playerID, events}) {
   return (
   <>
     <div className='bodyPage'>
-      <table className='bg-cover my-7 ml-7 border-separate border-spacing-1'>
-        <tbody>{board}</tbody>
-      </table>
-      <div className='rightBar my-auto ml-2'>
-        <div>{movePointsE}</div>
-        <span>cost: {G.player[opponentID].cost}/{G.player[opponentID].maxCost}</span>
-        {endTurnButton}
-        <span>cost: {G.player[playerID].cost}/{G.player[playerID].maxCost}</span>
-        <div>{movePoints}</div>
+      <div className='flex flex-row ml-[110px] mt-[12%]'>
+        <table className='bg-cover border-separate border-spacing-[2px]'>
+          <tbody>{board}</tbody>
+        </table>
+        <div className='rightBar my-auto pl-2 text-rose-400 font-semibold'>
+          <div>{movePointsE}</div>
+          <span>cost: {G.player[opponentID].cost}/{G.player[opponentID].maxCost}</span>
+          {endTurnButton}
+          <span>cost: {G.player[playerID].cost}/{G.player[playerID].maxCost}</span>
+          <div>{movePoints}</div>
+        </div>
       </div>
       {handCards}
       {cardData}

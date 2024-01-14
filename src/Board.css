@@ -14,11 +14,10 @@ p{
 }
 
 .bodyPage{
-    margin: 30px;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
-    width: fit-content;
+    width: 100%;
 }
 
 td,.cardBox{
@@ -41,9 +40,7 @@ td,.cardBox{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    align-self: flex-start;
-    height: 100%;
-    width: 130px;
+    width: 120px;
 }
 
 .atk, .hp, .cost{
@@ -74,11 +71,11 @@ td,.cardBox{
 
 #Cards{
     display: flex;
-    width: 260px;
-    align-self: flex-start;
+    width: 620px;
     flex-wrap: wrap;
+    flex-direction: row;
 }
 
 .cardBox{
-    margin: 2px;
+    margin: 1px;
 }
