@@ -38,9 +38,11 @@ export function CardBoard({G, ctx, moves, playerID, events}) {
     moves.setTrap(id, "Mouse Trap")
   }
 
-  const heroAbility = {
-    green: {onContextMenu: greenHeroAbility},
-    blue: {},
+  const heroAbility = (id) => {
+    return {
+      green: {onContextMenu: (e)=>greenHeroAbility(e, id)},
+      blue: {},
+    }
   }
 
   //game board
@@ -65,8 +67,8 @@ export function CardBoard({G, ctx, moves, playerID, events}) {
       }
       line.push(
         <td key={id} onClick={()=>handleClick(id)} 
-          {...heroAbility[G.player[playerID].hero]}
-          className={`border-solid border bg-white/10 rounded transition-transform ${clicked===id?'border-[rgb(0,255,0)]':'border-neutral-600'} hover:scale-[1.03]`}
+          {...heroAbility(id)[G.player[playerID].hero]}
+          className={`border-solid border bg-white/10 rounded transition-transform ${clicked===id?'border-[rgb(0,255,0)]':'border-neutral-600'} hover:scale-[0.96]`}
         >
           {content}
         </td>
@@ -80,7 +82,7 @@ export function CardBoard({G, ctx, moves, playerID, events}) {
 
   //Cards in hand display
   let cards = G.player[playerID].hand.map((content, id)=>
-    <div onClick={()=>handleClick(id + 16)} className={`cardBox border-solid border bg-white/10 rounded transition-transform ${clicked===id?'border-[rgb(0,255,0)]':'border-neutral-600'} hover:scale-[1.03]`}>
+    <div onClick={()=>handleClick(id + 16)} className={`cardBox border-solid border bg-white/10 rounded transition-transform ${clicked===id+16?'border-[rgb(0,255,0)]':'border-neutral-600'} hover:scale-[0.96]`}>
       <div style={{backgroundImage: content.img, backgroundSize: 'cover'}} className='cardImg rounded'/>
       <p className='atk text-lg' style={{color: 'cyan'}}>{content.atk}</p>
       <p className='hp text-lg' style={{color: 'cyan'}}>{content.hp}</p>
