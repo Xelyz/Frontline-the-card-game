@@ -68,7 +68,7 @@ export function CardBoard({G, ctx, moves, playerID, events}) {
       line.push(
         <td key={id} onClick={()=>handleClick(id)} 
           {...heroAbility(id)[G.player[playerID].hero]}
-          className={`border-solid border bg-white/10 rounded transition-transform ${clicked===id?'border-[rgb(0,255,0)]':'border-neutral-600'} hover:scale-[0.96]`}
+          className={`border-solid border-2 bg-white/10 rounded transition-transform ${clicked===id?'border-[rgb(0,255,0)]':'border-black'} hover:scale-[0.97]`}
         >
           {content}
         </td>
@@ -82,7 +82,7 @@ export function CardBoard({G, ctx, moves, playerID, events}) {
 
   //Cards in hand display
   let cards = G.player[playerID].hand.map((content, id)=>
-    <div onClick={()=>handleClick(id + 16)} className={`cardBox border-solid border bg-white/10 rounded transition-transform ${clicked===id+16?'border-[rgb(0,255,0)]':'border-neutral-600'} hover:scale-[0.96]`}>
+    <div onClick={()=>handleClick(id + 16)} className={`cardBox border-solid border bg-white/10 rounded transition-transform ${clicked===id+16?'border-[rgb(0,255,0)]':'border-black'} hover:scale-[0.97]`}>
       <div style={{backgroundImage: content.img, backgroundSize: 'cover'}} className='cardImg rounded'/>
       <p className='atk text-lg' style={{color: 'cyan'}}>{content.atk}</p>
       <p className='hp text-lg' style={{color: 'cyan'}}>{content.hp}</p>
@@ -92,18 +92,20 @@ export function CardBoard({G, ctx, moves, playerID, events}) {
   const handCards = <div id='Cards' className='mt-10'>{cards}</div>
 
   //View of Card information when it is selected
-  let cardData = <div className='w-80 self-stretch my-7 box-content invisible'/>
+  let cardData = <div/>
   if(clicked !== false){
     const cardSelected = clicked < 16 ? G.field[clicked] : G.player[playerID].hand[clicked-16]
-    cardData = cardSelected ? <div className='relative rounded-md bg-white shadow-lg self-stretch w-80 my-7 box-content text-center'>
-      <div className='w-80 h-80' style={{backgroundImage: cardSelected.img, backgroundSize: 'cover'}}/>
-      <p className='atk text-3xl' style={{color: 'cyan'}}>{cardSelected.atk}</p>
-      <p className='hp text-3xl' style={{color: 'cyan'}}>{cardSelected.hp}</p>
-      <p className='cost text-3xl' style={{color: 'violet'}}>{cardSelected.cost}</p>
-      <p className='absolute bottom-0 text-2xl font-mono w-full'>{cardSelected.kind}</p>
-      <div className=''>
-        <p className='w-full text-3xl'>{cardSelected.name}</p>
-        <span className='my-auto'>{cardSelected.desc}</span>
+    cardData = cardSelected ? <div className='absolute left-10 top-1/2 -translate-y-2/3'>
+      <div className='relative rounded-md bg-white shadow-lg h-[500px] w-80 my-7 box-content text-center'>
+        <div className='w-80 h-80 rounded-md bg-slate-200' style={{backgroundImage: cardSelected.img, backgroundSize: 'cover'}}/>
+        <p className='atk text-3xl' style={{color: 'cyan'}}>{cardSelected.atk}</p>
+        <p className='hp text-3xl' style={{color: 'cyan'}}>{cardSelected.hp}</p>
+        <p className='cost text-3xl' style={{color: 'violet'}}>{cardSelected.cost}</p>
+        <p className='absolute bottom-0 text-2xl font-mono w-full'>{cardSelected.kind}</p>
+        <div className=''>
+          <p className='w-full text-3xl'>{cardSelected.name}</p>
+          <span>{cardSelected.desc}</span>
+        </div>
       </div>
     </div> : cardData
   }
@@ -121,11 +123,11 @@ export function CardBoard({G, ctx, moves, playerID, events}) {
   return (
   <>
     <div className='bodyPage'>
-      <div className='flex flex-row ml-[110px] mt-[12%]'>
+      <div className='flex flex-row ml-[110px] mt-[14%]'>
         <table className='bg-cover border-separate border-spacing-[2px]'>
           <tbody>{board}</tbody>
         </table>
-        <div className='rightBar my-auto pl-2 text-rose-400 font-semibold'>
+        <div className='rightBar my-auto pl-2 text-black font-semibold'>
           <div>{movePointsE}</div>
           <span>cost: {G.player[opponentID].cost}/{G.player[opponentID].maxCost}</span>
           {endTurnButton}

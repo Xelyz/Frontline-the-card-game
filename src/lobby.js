@@ -45,6 +45,7 @@ class Lobby extends Component {
   componentWillUnmount() {
     window.removeEventListener('beforeunload', this.cleanup.bind(this));
   }
+
   joinRoom = (player_no) => {
     const username = 'Player ' + player_no;
     if (this.state.id) {
@@ -156,10 +157,10 @@ class Lobby extends Component {
       <div className='text-white'>
         <div className="game-link">
           <span>
-            {this.props.isPublic ? 'Public lobby text' : 'Private lobby text'}
+            {this.props.isPublic ? 'Public lobby' : 'Private lobby'}
           </span>
           <br />
-          <div
+          {this.props.ispublic?<><div
             className="game-link-box text-black"
             ref={(gameLinkBox) => (this.gameLinkBox = gameLinkBox)}
           >
@@ -167,7 +168,7 @@ class Lobby extends Component {
           </div>
           <div className="menu-button small" onClick={this.copyToClipboard}>
             {this.state.copied ? 'Copied!' : ' Copy '}
-          </div>
+          </div></>:'Waiting for others to join'}
         </div>
         {this.state.joined.length}{' '}
         <span>
