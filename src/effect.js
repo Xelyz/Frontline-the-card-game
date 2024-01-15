@@ -28,6 +28,16 @@ export const onPlayEffect = {
             return;
         }
         player.hand.push({...CARDS.find(card => card.name === "Assassinate")})
+    },
+
+    soulOfSouldier: ({G, ctx}, card) => {
+        for(let idx in G.field){
+            const square = G.field[idx]
+            if(square && square.kind==='hero' && square.pid===card.pid){
+                dealDamage({G, ctx}, 2, idx)
+                clearField({G, ctx, events})
+            }
+        }
     }
 }
 
