@@ -134,7 +134,7 @@ function gameInitialize({G, ctx, random, events}){
 function setupGame({G, random}){
     G.field = Array(16).fill(null)
     G.gameReview = []
-    G.handLimit = 8
+    G.handLimit = 10
     G.player = {
         '0': {
         hand: [],
