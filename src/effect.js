@@ -46,6 +46,9 @@ export const onOutEffect = {
     lose: ({G, ctx, events}, hero) => {
         G.playing = false
         events.endGame({loser: hero.pid, winner: enemyOf(hero.pid)})
+    },
+    magicBunny: ({G, ctx}, card) => {
+        draw({G, ctx}, card.pid)
     }
 }
 
