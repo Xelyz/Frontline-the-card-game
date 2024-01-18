@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import './Board.css'
-import { enemyOf } from './Game';
+import { adjacentSquares, enemyOf } from './Game';
 import { CARDS } from './Cards';
-
 /**todo
- * display card information
+ * visualize possible action squares
  */
 export function CardBoard({G, ctx, moves, playerID, events}) {
   const opponentID = enemyOf(playerID)
@@ -38,9 +37,9 @@ export function CardBoard({G, ctx, moves, playerID, events}) {
     moves.setTrap(id, "Mouse Trap")
   }
 
-  const heroAbility = (id) => {
+  const heroAbility = (idx) => {
     return {
-      green: {onContextMenu: (e)=>greenHeroAbility(e, id)},
+      green: {onContextMenu: (e)=>greenHeroAbility(e, idx)},
       blue: {},
     }
   }
@@ -51,8 +50,8 @@ export function CardBoard({G, ctx, moves, playerID, events}) {
   for (let i = 3; i >= 0; i--) {
     let line = [];
     for (let j = 0; j < 4; j++) {
-      const id = playerID === '0' ? 4 * i + j : 4 * (3-i) + 3 - j;//calculate tile id
-      const card = G.field[id];
+      const idx = playerID === '0' ? 4 * i + j : 4 * (3-i) + 3 - j;//calculate tile idx
+      const card = G.field[idx];
       let content = ''
       if(card){
         let style = {backgroundImage: card.img, backgroundSize: 'cover'}
@@ -60,15 +59,34 @@ export function CardBoard({G, ctx, moves, playerID, events}) {
           style.visibility = 'hidden'
           trapNumE++
         }
-        content = <div style={style} className='cardImg rounded'>
+        content = <div style={style} className='cardImg'>
           <p className='atk text-lg' style={{color: card.kind==="trap"?'black':card.pid===playerID?'cyan':'red'}}>{card.atk}</p>
           <p className='hp text-lg' style={{color: card.kind==="trap"?'black':card.pid===playerID?'cyan':'red'}}>{card.currHp}</p>
         </div>
       }
+
+      let border = 'border-black'
+      if(clicked === idx){
+        border = 'border-[rgb(0,255,255)]'
+      }
+      else if(G.field[clicked] && G.field[clicked].pid === playerID){
+          if(adjacentSquares(clicked).includes(idx)){
+            if(G.field[idx] === null || G.field[idx].kind === "trap"){
+              border = 'border-[rgb(0,255,0)]'
+            }
+            else if(G.field[idx].pid === enemyOf(playerID)){
+              border = 'border-[rgb(255,0,0)]'
+            }
+            else if(G.field[idx].pid === playerID){
+              border = 'border-[rgb(255,0,255)]'
+            }
+          }
+      }
+
       line.push(
-        <td key={id} onClick={()=>handleClick(id)} 
-          {...heroAbility(id)[G.player[playerID].hero]}
-          className={`border-solid border-2 bg-white/10 rounded transition-transform ${clicked===id?'border-[rgb(0,255,0)]':'border-black'} hover:scale-[0.97]`}
+        <td key={idx} onClick={()=>handleClick(idx)} 
+          {...heroAbility(idx)[G.player[playerID].hero]}
+          className={`border-solid border-2 bg-white/10 rounded transition-transform ${border} hover:scale-[0.97]`}
         >
           {content}
         </td>
@@ -78,12 +96,12 @@ export function CardBoard({G, ctx, moves, playerID, events}) {
   }
 
   //end turn button
-  const endTurnButton = <button id='endTurn' onClick={()=>events.endTurn()} className="bg-slate-300 rounded">{ctx.currentPlayer===playerID?"Your Turn":"Op's Turn"}</button>
+  const endTurnButton = <button id='endTurn' onClick={()=>events.endTurn()} className="bg-slate-300 rounded">{ctx.currentPlayer===playerID?"End Turn":"Op Turn"}</button>
 
   //Cards in hand display
   let cards = G.player[playerID].hand.map((content, id)=>
-    <div onClick={()=>handleClick(id + 16)} className={`cardBox border-solid border bg-white/10 rounded transition-transform ${clicked===id+16?'border-[rgb(0,255,0)]':'border-black'} hover:scale-[0.97]`}>
-      <div style={{backgroundImage: content.img, backgroundSize: 'cover'}} className='cardImg rounded'/>
+    <div onClick={()=>handleClick(id + 16)} className={`cardBox border-solid border-2 bg-white/10 rounded transition-transform ${clicked===id+16?'border-[rgb(0,255,255)]':'border-black'} hover:scale-[0.97]`}>
+      <div style={{backgroundImage: content.img, backgroundSize: 'cover'}} className='cardImg'/>
       <p className='atk text-lg' style={{color: 'cyan'}}>{content.atk}</p>
       <p className='hp text-lg' style={{color: 'cyan'}}>{content.hp}</p>
       <p className='cost text-lg' style={{color: 'violet'}}>{content.cost}</p>
@@ -110,14 +128,14 @@ export function CardBoard({G, ctx, moves, playerID, events}) {
     </div> : cardData
   }
 
-  let movePoints = [<span className='invisible inline-block h-2 w-2'></span>]
+  let movePoints = [<span className='inline-block h-2'>MP:</span>]
   for(let i=0;i<G.player[playerID].movePt;i++){
-    movePoints.push(<span className='inline-block rounded-full bg-lime-500 h-2 w-2 m-1'></span>)
+    movePoints.push(<span className='inline-block rounded-full bg-lime-500 h-2 w-2 m-[2px]'></span>)
   }
 
-  let movePointsE = [<span className='invisible inline-block h-2 w-2'></span>]
+  let movePointsE = [<span className='inline-block h-2'>MP:</span>]
   for(let i=0;i<G.player[opponentID].movePt;i++){
-    movePointsE.push(<span className='inline-block rounded-full bg-red-500 h-2 w-2 m-1'></span>)
+    movePointsE.push(<span className='inline-block rounded-full bg-red-500 h-2 w-2 m-[2px]'></span>)
   }
 
   return (
