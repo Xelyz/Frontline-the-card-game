@@ -82,6 +82,17 @@ export function CardBoard({G, ctx, moves, playerID, events}) {
             }
           }
       }
+      else if(clicked>=16){
+        if(G.player[playerID].hand[clicked-16].kind === "minion"){
+          if(adjacentSquares(idx).some((fieldIdx) => G.field[fieldIdx] && G.field[fieldIdx].pid === playerID && G.field[fieldIdx].kind !== "trap")
+          && G.field[idx] === null){
+            border = 'border-[rgb(0,255,0)]'
+          }
+        }
+        else if(G.player[playerID].hand[clicked-16].kind === "spell"){
+          border = 'border-[rgb(0,255,0)]'
+        }
+      }
 
       line.push(
         <td key={idx} onClick={()=>handleClick(idx)} 
