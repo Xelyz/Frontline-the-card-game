@@ -70,17 +70,21 @@ export function CardBoard({G, ctx, moves, playerID, events}) {
         border = 'border-[rgb(0,255,255)]'
       }
       else if(G.field[clicked] && G.field[clicked].pid === playerID){
-          if(adjacentSquares(clicked).includes(idx)){
-            if(G.field[idx] === null || G.field[idx].kind === "trap"){
+        if(G.field[clicked].exhausted){
+        }
+        else if(adjacentSquares(clicked).includes(idx)){
+          if(G.field[idx] === null || G.field[idx].kind === "trap"){
+            if(!G.field[clicked].cannotMove){
               border = 'border-[rgb(0,255,0)]'
             }
-            else if(G.field[idx].pid === enemyOf(playerID)){
-              border = 'border-[rgb(255,0,0)]'
-            }
-            else if(G.field[idx].pid === playerID){
-              border = 'border-[rgb(255,0,255)]'
-            }
           }
+          else if(G.field[idx].pid === enemyOf(playerID) && !G.field[clicked].cannotAttack){
+            border = 'border-[rgb(255,0,0)]'
+          }
+          else if(G.field[idx].pid === playerID && !G.field[clicked].cannotMove && !G.field[idx].cannotMove && !G.field[idx].exhausted){
+            border = 'border-[rgb(255,0,255)]'
+          }
+        }
       }
       else if(clicked>=16){
         if(G.player[playerID].hand[clicked-16].kind === "minion"){
@@ -97,7 +101,7 @@ export function CardBoard({G, ctx, moves, playerID, events}) {
       line.push(
         <td key={idx} onClick={()=>handleClick(idx)} 
           {...heroAbility(idx)[G.player[playerID].hero]}
-          className={`border-solid border-2 bg-white/10 rounded transition-transform ${border} hover:scale-[0.97]`}
+          className={`border-solid border-2 bg-white/10 rounded relative transition-transform ${border} hover:scale-[0.97] afterBg`}
         >
           {content}
         </td>
