@@ -66,6 +66,8 @@ export function CardBoard({G, ctx, moves, playerID, events}) {
       }
 
       let border = 'border-black'
+      let txt = ''
+      const bgFilter = 'after:bg-white/25'
       if(clicked === idx){
         border = 'border-[rgb(0,255,255)]'
       }
@@ -76,13 +78,16 @@ export function CardBoard({G, ctx, moves, playerID, events}) {
           if(G.field[idx] === null || G.field[idx].kind === "trap"){
             if(!G.field[clicked].cannotMove){
               border = 'border-[rgb(0,255,0)]'
+              txt = bgFilter + " after:content-['Move']"
             }
           }
           else if(G.field[idx].pid === enemyOf(playerID) && !G.field[clicked].cannotAttack){
             border = 'border-[rgb(255,0,0)]'
+            txt = bgFilter + " after:content-['Attack']"
           }
           else if(G.field[idx].pid === playerID && !G.field[clicked].cannotMove && !G.field[idx].cannotMove && !G.field[idx].exhausted){
             border = 'border-[rgb(255,0,255)]'
+            txt = bgFilter + " after:content-['Switch']"
           }
         }
       }
@@ -127,7 +132,7 @@ export function CardBoard({G, ctx, moves, playerID, events}) {
       line.push(
         <td key={idx} onClick={()=>handleClick(idx)} 
           {...heroAbility(idx)[G.player[playerID].hero]}
-          className={`border-solid border-2 bg-white/10 rounded relative transition-transform ${border} hover:scale-[0.97] afterBg`}
+          className={`border-solid border-2 bg-white/10 rounded relative transition-transform ${border} ${txt} hover:scale-[0.97] afterBg`}
         >
           {content}
         </td>
