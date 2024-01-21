@@ -87,14 +87,40 @@ export function CardBoard({G, ctx, moves, playerID, events}) {
         }
       }
       else if(clicked>=16){
-        if(G.player[playerID].hand[clicked-16].kind === "minion"){
+        const handCard = G.player[playerID].hand[clicked-16]
+        if(handCard.kind === "minion"){
           if(adjacentSquares(idx).some((fieldIdx) => G.field[fieldIdx] && G.field[fieldIdx].pid === playerID && G.field[fieldIdx].kind !== "trap")
           && G.field[idx] === null){
             border = 'border-[rgb(0,255,0)]'
           }
         }
-        else if(G.player[playerID].hand[clicked-16].kind === "spell"){
-          border = 'border-[rgb(0,255,0)]'
+        else if(handCard.kind === "spell"){
+          console.log(handCard.target)
+          if(handCard.target === "any"){
+            border = 'border-[rgb(0,255,0)]'
+          }
+          else if(handCard.target === "field"){
+          }
+          else if(G.field[idx]){
+            if(handCard.target.split(' ').every((target)=>{
+              if(target === "enemy"){
+                return G.field[idx].pid === enemyOf(playerID)
+              }else if(target === "ally"){
+                return G.field[idx].pid === playerID
+              }else if(target === "minion"){
+                return G.field[idx].kind === "minion"
+              }else if(target === "hero"){
+                return G.field[idx].kind === "hero"
+              }else if(target === "unit"){
+                return G.field[idx].kind === "minion" || G.field[idx].kind === "hero"
+              }
+            })){
+              border = 'border-[rgb(0,255,0)]'
+            }
+          }
+        }
+        else if(handCard.kind === "trap"){
+          if(G.field[idx] === null){border = 'border-[rgb(0,255,0)]'}
         }
       }
 
