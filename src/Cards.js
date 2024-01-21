@@ -84,7 +84,7 @@ export const CARDS=[
         onEveryTurnBegin: 'archerTower',
         cannotMove: true,
         id: 7,
-        img: '',
+        img: 'url(/imgPack/archer_tower.png)',
         color: 'white',
     },
     {
@@ -106,7 +106,7 @@ export const CARDS=[
         spell: "assassinate",
         target: "enemy minion",
         id: 9,
-        img: '',
+        img: 'url(/imgPack/assassinate.png)',
         color: 'white',
     },
     {
@@ -117,7 +117,7 @@ export const CARDS=[
         spell: "tornado",
         target: "field",
         id: 10,
-        img: '',
+        img: 'url(/imgPack/tornado.png)',
         color: 'white',
     },
     {
