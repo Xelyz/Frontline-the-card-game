@@ -68,6 +68,9 @@ export function CardBoard({G, ctx, moves, playerID, events}) {
       let border = 'border-black'
       let txt = ''
       const bgFilter = 'after:bg-white/25'
+      if(G.field[idx] && G.field[idx].exhausted){
+        txt = bgFilter + " after:content-['zzz'] after:text-[rgb(0,0,255)]"
+      }
       if(clicked === idx){
         border = 'border-[rgb(0,255,255)]'
       }
