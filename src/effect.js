@@ -30,7 +30,7 @@ export const onPlayEffect = {
         player.hand.push({...CARDS.find(card => card.name === "Assassinate")})
     },
 
-    soulOfSouldier: ({G, ctx, random, events}, card) => {
+    soulOfSoldier: ({G, ctx, random, events}, card) => {
         for(let idx in G.field){
             const square = G.field[idx]
             if(square && square.kind==='hero' && square.pid===card.pid){
