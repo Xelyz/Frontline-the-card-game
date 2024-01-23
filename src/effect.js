@@ -22,7 +22,7 @@ export const onPlayEffect = {
     },
 
     /**Add an Assassinate into your hand */
-    assassin: ({G, ctx}, card) => {
+    assassin: ({G}, card) => {
         const player = G.player[card.pid]
         if (player.hand.length >= G.handLimit) {
             return;
@@ -30,12 +30,12 @@ export const onPlayEffect = {
         player.hand.push({...CARDS.find(card => card.name === "Assassinate")})
     },
 
-    soulOfSouldier: ({G, ctx, events}, card) => {
+    soulOfSouldier: ({G, ctx, random, events}, card) => {
         for(let idx in G.field){
             const square = G.field[idx]
             if(square && square.kind==='hero' && square.pid===card.pid){
-                dealDamage({G, ctx}, 2, idx)
-                clearField({G, ctx, events})
+                dealDamage({G, ctx, random, events}, 2, idx)
+                clearField({G, ctx, random, events})
             }
         }
     }
@@ -43,19 +43,19 @@ export const onPlayEffect = {
 
 export const onOutEffect = {
     /**Lose the game */
-    lose: ({G, ctx, events}, hero) => {
+    lose: ({G, events}, hero) => {
         G.playing = false
         events.endGame({loser: hero.pid, winner: enemyOf(hero.pid)})
     },
-    magicBunny: ({G, ctx}, card) => {
-        draw({G, ctx}, card.pid)
+    magicBunny: ({G, ctx, random, events}, card) => {
+        draw({G, ctx, random, events}, card.pid)
     }
 }
 
 export const onDamagedEffect = {
     /**Draw a card */
-    thief: ({G, ctx}, card) => {
-        draw({G, ctx}, card.pid)
+    thief: ({G, ctx, random, events}, card) => {
+        draw({G, ctx, random, events}, card.pid)
     }
 }
 
@@ -75,19 +75,19 @@ export const onDefenseEffect = {
 
 export const onTurnBeginEffect = {
     /**Summon one 2/1 mini goblin on a random adjacent square*/
-    portal: ({G, ctx, random}, card)=>{
-        summon({G, ctx, random}, {...CARDS.find(card => card.name === "Goblin")}, adjacentSquares(card.idx), card.pid)
+    portal: ({G, ctx, random, events}, card)=>{
+        summon({G, ctx, random, events}, {...CARDS.find(card => card.name === "Goblin")}, adjacentSquares(card.idx), card.pid)
     }
 }
 
 export const onEveryTurnBeginEffect = {
     /**Deal 1 damage to opponent's hero*/
-    archerTower: ({G, ctx, events}, card)=>{
+    archerTower: ({G, ctx, random, events}, card)=>{
         for(let idx in G.field){
             const square = G.field[idx]
             if(square && square.kind==='hero' && square.pid===enemyOf(card.pid)){
-                dealDamage({G, ctx}, 1, idx)
-                clearField({G, ctx, events})
+                dealDamage({G, ctx, random, events}, 1, idx)
+                clearField({G, ctx, random, events})
             }
         }
     }
@@ -95,19 +95,19 @@ export const onEveryTurnBeginEffect = {
 
 export const SpellEffect = {
     /**Deal 1 damage to all characters on a square and its adjacent squares.*/
-    potion: ({G, ctx, events}, targetIdx)=>{
+    potion: ({G, ctx, random, events}, targetIdx)=>{
         let targets = adjacentSquares(targetIdx)
         targets.push(targetIdx)
         targets = targets.filter(idx => G.field[idx] !== null)
-        targets.map(target => dealDamage({G, ctx}, 1, target))
-        clearField({G, ctx, events})
+        targets.map(target => dealDamage({G, ctx, random, events}, 1, target))
+        clearField({G, ctx, random, events})
     },
 
     /**Destroy an enemy minion*/
-    assassinate: ({G, ctx, events, card}, targetIdx)=>{
+    assassinate: ({G, ctx, random, events, card}, targetIdx)=>{
         const target = G.field[targetIdx]
         if(target && target.pid === enemyOf(card.pid) && target.kind === 'minion'){
-            out({G, ctx, events}, targetIdx)
+            out({G, ctx, random, events}, targetIdx)
         }
         else{
             console.log("Invalid target")
@@ -135,12 +135,27 @@ export const SpellEffect = {
             card.idx = indices[idx]
         }
         G.field = newField
-    }
+    },
+
+    stab: ({G, ctx, random, events}, targetIdx)=>{
+        dealDamage({G, ctx, random, events}, 2, targetIdx)
+        clearField({G, ctx, random, events})
+    },
+
+    rollingRock: ({G, ctx, random, events}, targetIdx)=>{
+        [0,1,2,3].forEach(value=>dealDamage({G, ctx, random, events}, 2, value*4+targetIdx%4))
+        clearField({G, ctx, random, events})
+    },
+
+    wrathOfFire: ({G, ctx, random, events}, targetIdx)=>{
+        [0,1,2,3].forEach(value=>dealDamage({G, ctx, random, events}, 3, value+targetIdx-targetIdx%4))
+        clearField({G, ctx, random, events})
+    },
 }
 
 export const triggerEffect = {
-    mouseTrap: ({G, ctx, events}, card)=>{
-        dealDamage({G, ctx}, 1, card.idx)
-        clearField({G, ctx, events})
+    mouseTrap: ({G, ctx, random, events}, card)=>{
+        dealDamage({G, ctx, random, events}, 1, card.idx)
+        clearField({G, ctx, random, events})
     }
 }
