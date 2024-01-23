@@ -37,6 +37,9 @@ function minionDeployInitialize({G, ctx, random, events}, card, pid, fieldIdx){
 }
 
 export function dealDamage({G, ctx, random, events}, dmg, idx){
+    if(G.field[idx] === null){
+        return
+    }
     const card = G.field[idx]
     card.currHp-=dmg
     if(dmg > 0){
