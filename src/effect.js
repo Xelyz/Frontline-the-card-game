@@ -93,6 +93,14 @@ export const onEveryTurnBeginEffect = {
     }
 }
 
+export const onTurnEndEffect = {
+
+}
+
+export const onEveryTurnEndEffect = {
+
+}
+
 export const SpellEffect = {
     /**Deal 1 damage to all characters on a square and its adjacent squares.*/
     potion: ({G, ctx, random, events}, targetIdx)=>{

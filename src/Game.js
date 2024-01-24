@@ -1,6 +1,6 @@
 import { INVALID_MOVE } from 'boardgame.io/core'
 import {CARDS} from './Cards'
-import {onPlayEffect, onOutEffect, onDamagedEffect, onAttackEffect, onDefenseEffect, onTurnBeginEffect, onEveryTurnBeginEffect, SpellEffect, onMoveEffect, onSurvivingDamageEffect, triggerEffect} from './effect'
+import {onPlayEffect, onOutEffect, onDamagedEffect, onAttackEffect, onDefenseEffect, onTurnBeginEffect, onEveryTurnBeginEffect, SpellEffect, onMoveEffect, onSurvivingDamageEffect, triggerEffect, onTurnEndEffect, onEveryTurnEndEffect} from './effect'
 import { HEROS } from './hero'
 
 /*
@@ -449,13 +449,28 @@ export const Cardgame = {
             for(let card of G.field){
                 if(card){
                     if(card.pid===ctx.currentPlayer){
-                        card.exhausted = false
                         if(card.onTurnBegin){
                             card.onTurnBegin.split(' ').map((fn)=>onTurnBeginEffect[fn]({G, ctx, random, events}, card))
                         }
                     }
                     if(card.onEveryTurnBegin){
                         card.onEveryTurnBegin.split(' ').map((fn)=>onEveryTurnBeginEffect[fn]({G, ctx, random, events}, card))
+                    }
+                }
+            }
+        },
+
+        onEnd: ({G, ctx, random, events}) => {
+            for(let card of G.field){
+                if(card){
+                    if(card.pid===ctx.currentPlayer){
+                        card.exhausted = false
+                        if(card.onTurnEnd){
+                            card.onTurnEnd.split(' ').map((fn)=>onTurnEndEffect[fn]({G, ctx, random, events}, card))
+                        }
+                    }
+                    if(card.onEveryTurnEnd){
+                        card.onEveryTurnEnd.split(' ').map((fn)=>onEveryTurnEndEffect[fn]({G, ctx, random, events}, card))
                     }
                 }
             }
