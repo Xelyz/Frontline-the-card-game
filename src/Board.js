@@ -122,6 +122,7 @@ export function CardBoard({G, ctx, moves, playerID, events}) {
               }else if(target === "unit"){
                 return G.field[idx].kind === "minion" || G.field[idx].kind === "hero"
               }
+              return true
             })){
               border = 'border-[rgb(0,255,0)]'
             }
