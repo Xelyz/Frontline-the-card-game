@@ -124,7 +124,7 @@ export const SpellEffect = {
     },
 
     /**Destroy all unmovable minions. Randomly shuffle the positions of all minions and heros on the field.*/
-    tornado: ({G, ctx, random})=>{
+    tornado: ({G, ctx, random, events})=>{
         const indices = random.Shuffle([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15])
         for(let idx in G.field){
             const card = G.field[idx]
@@ -132,7 +132,7 @@ export const SpellEffect = {
                 continue
             }
             if(card.cannotMove){
-                out({G, ctx}, idx)
+                out({G, ctx, random, events}, idx)
             }
         }
         let minionList = G.field.filter((card) => card !== null)
@@ -159,6 +159,16 @@ export const SpellEffect = {
         [0,1,2,3].forEach(value=>dealDamage({G, ctx, random, events}, 3, value+targetIdx-targetIdx%4))
         clearField({G, ctx, random, events})
     },
+
+    uplift: ({G, ctx, random, events, card}) => {
+        for(let idx in G.field){
+            if(G.field[idx] && G.field[idx].pid === card.pid && G.field[idx].kind === "minion"){
+                G.field[idx].atk+=1
+                G.field[idx].hp+=1
+                G.field[idx].currHp+=1
+            }
+        }
+    }
 }
 
 export const triggerEffect = {

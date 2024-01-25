@@ -258,4 +258,15 @@ export const CARDS=[
         img: 'url(/imgPack/wrath_of_fire.png)',
         color: 'white',
     },
+    {
+        name: "Uplift",
+        cost: 3,
+        kind: "spell",
+        desc: "Grant your minions 1 atk and 1 hp",
+        spell: "uplift",
+        target: "field",
+        id: 23,
+        img: 'url(/imgPack/uplift.png)',
+        color: 'white',
+    },
 ]
