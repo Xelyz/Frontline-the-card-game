@@ -11,4 +11,6 @@ The images are generated using [Stable Diffusion](https://civitai.com/models/272
 - Create React App
 
 The project starts on 9/8 2023 and the repository is created on 1/1 2024.
+
 Update 1/5: I recreated this after learning git commands. 
+Update 1/25: The project is now deployed with [cloudflare](https://frontline-the-card-game.pages.dev)
