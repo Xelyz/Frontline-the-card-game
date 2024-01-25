@@ -1,4 +1,4 @@
-import { adjacentSquares, clearField, dealDamage, draw, summon, logMsg, out, enemyOf } from "./Game"
+import { adjacentSquares, clearField, dealDamage, draw, summon, out, enemyOf } from "./Game"
 import {CARDS} from "./Cards"
 
 export const onMoveEffect = {

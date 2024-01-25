@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Board.css'
 import { adjacentSquares, enemyOf } from './Game';
-import { CARDS } from './Cards';
+
 /**todo
  * visualize possible action squares
  */
@@ -57,6 +57,7 @@ export function CardBoard({G, ctx, moves, playerID, events}) {
         let style = {backgroundImage: card.img, backgroundSize: 'cover'}
         if(card.kind === 'trap' && card.pid !== playerID){
           style.visibility = 'hidden'
+          // eslint-disable-next-line
           trapNumE++
         }
         content = <div style={style} className='cardImg'>
