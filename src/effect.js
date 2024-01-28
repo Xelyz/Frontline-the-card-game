@@ -38,6 +38,13 @@ export const onPlayEffect = {
                 clearField({G, ctx, random, events})
             }
         }
+    },
+
+    doubleEdgedSword: ({G, ctx, random, events}, card) => {
+        let targets = adjacentSquares(card.idx)
+        targets = targets.filter(idx => G.field[idx] !== null)
+        targets.map(target => dealDamage({G, ctx, random, events}, 1, target))
+        clearField({G, ctx, random, events})
     }
 }
 

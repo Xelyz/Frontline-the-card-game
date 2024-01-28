@@ -269,4 +269,16 @@ export const CARDS=[
         img: 'url(/imgPack/uplift.png)',
         color: 'white',
     },
+    {
+        name: "Double Edged Sword",
+        cost: 3,
+        atk: 3,
+        hp: 2,
+        kind: "minion",
+        desc: "Deploy: Deal 1 damage to all characters on its adjacent squares.",
+        onPlay: "doubleEdgedSword",
+        id: 24,
+        img: 'url(/imgPack/double_edged_sword.png)',
+        color: 'white',
+    },
 ]
