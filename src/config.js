@@ -1,0 +1,1 @@
+export const window_location = "http://localhost:3000"
