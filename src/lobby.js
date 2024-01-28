@@ -8,6 +8,7 @@ import { Cardgame } from './Game.js';
 import { CardBoard } from './Board.js';
 import { withRouter } from './RouterWrapper';
 import Background from './BackgroundWrapper.js';
+import { window_location } from './config.js';
 
 const api = new LobbyAPI();
 
@@ -205,16 +206,23 @@ class Lobby extends Component {
         players={this.state.joined}
         playerID={String(this.state.myID)}
         credentials={this.state.userAuthToken}
-      ></Game>
+      />
     );
   };
   render() {
+    let view
     if (this.state.joined.length === 2) {
-      return this.getGameClient();
+      view = this.getGameClient();
     }
-    return (
-      this.state.id ? this.gameExistsView() : this.gameNotFoundView()
-    );
+    else{
+      view = this.state.id ? this.gameExistsView() : this.gameNotFoundView()
+    }
+    return <>
+      <audio loop autoPlay> 
+        <source src={`${window_location}/EradicationCatastrophe.mp3`} type="audio/mpeg"/>
+      </audio>
+      {view}
+    </>
   }
 }
 
