@@ -14,4 +14,5 @@ The project starts on 9/8 2023 and the repository is created on 1/1 2024.
 
 Update 1/5: I recreated this after learning git commands. 
 Update 1/25: The project is now deployed with [cloudflare](https://frontline-the-card-game.pages.dev)
-1/26: the cloudflare deployment only deploys the client side. I'm still working on deploying the server but the [demo](https://frontline-the-card-game.pages.dev/demo) is locally playable
+1/26: the cloudflare deployment only deploys the client side. I'm still working on deploying the server but the demo is locally playable(deprecated)
+1/29: The game is playable with [render](https://frontline-server.onrender.com) with server deployed on the same location.(active)
