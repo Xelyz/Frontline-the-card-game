@@ -1,11 +1,10 @@
 import ky from 'ky';
-
-const server = `http://localhost:8000`
+import { address } from './config.js'
 
 export class LobbyAPI {
   constructor() {
     this.api = ky.create({
-      prefixUrl: `${server}/games/Cardgame`,
+      prefixUrl: `${address}/games/Cardgame`,
     });
   }
   async createRoom(numPlayers, unlisted) {

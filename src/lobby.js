@@ -8,7 +8,7 @@ import { Cardgame } from './Game.js';
 import { CardBoard } from './Board.js';
 import { withRouter } from './RouterWrapper';
 import Background from './BackgroundWrapper.js';
-import { window_location } from './config.js';
+import { address } from './config.js';
 
 const api = new LobbyAPI();
 
@@ -16,12 +16,9 @@ const Game = Client({
   game: Cardgame,
   board: CardBoard,
   numPlayers: 2,
-  multiplayer: SocketIO({ server: 'http://localhost:8000' }),
+  multiplayer: SocketIO({ server: address }),
   seed: 114,
 });
-
-const { protocol, hostname, port } = window.location;
-const server = `${protocol}//${hostname}:${port}`;
 
 class Lobby extends Component {
   state = {};
@@ -165,7 +162,7 @@ class Lobby extends Component {
             className="game-link-box text-black"
             ref={(gameLinkBox) => (this.gameLinkBox = gameLinkBox)}
           >
-            {`${server}/lobby/${this.state.id}`}
+            {`${address}/lobby/${this.state.id}`}
           </div>
           <div className="menu-button small" onClick={this.copyToClipboard}>
             {this.state.copied ? 'Copied!' : ' Copy '}
@@ -219,7 +216,7 @@ class Lobby extends Component {
     }
     return <>
       <audio loop autoPlay> 
-        <source src={`${window_location}/EradicationCatastrophe.mp3`} type="audio/mpeg"/>
+        <source src={`${address}/EradicationCatastrophe.mp3`} type="audio/mpeg"/>
       </audio>
       {view}
     </>
