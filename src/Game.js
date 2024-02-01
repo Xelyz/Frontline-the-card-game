@@ -5,11 +5,9 @@ import { HEROS } from './hero'
 
 /*
 todo:
-trap trigger
+deckbuilder
 
 notes:
-all words in card names start with Capital Letter
-all card effects are in camelCase.
 all trigger effects group names start with 'on'
 */
 
@@ -43,12 +41,12 @@ export function dealDamage({G, ctx, random, events}, dmg, idx){
     const card = G.field[idx]
     card.currHp-=dmg
     if(dmg > 0){
-        if(card.onDamaged){
-            card.onDamaged.split(' ').map((fn)=>onDamagedEffect[fn]({G, ctx, random, events}, card))
+        if(card.effect.onDamaged){
+            card.effect.onDamaged.split(' ').map((fn)=>onDamagedEffect[fn]({G, ctx, random, events}, card))
             logMsg({G, ctx}, `${card.name} takes ${dmg} damage`)
         }
-        if(card.currHp > 0 && card.onSurvivingDamage){
-            card.onSurvivingDamage.split(' ').map((fn)=>onSurvivingDamageEffect[fn]({G, ctx, random, events}, card))
+        if(card.currHp > 0 && card.effect.onSurvivingDamage){
+            card.effect.onSurvivingDamage.split(' ').map((fn)=>onSurvivingDamageEffect[fn]({G, ctx, random, events}, card))
         }
     }
 }
@@ -64,12 +62,12 @@ function battle({G, ctx, random, events}, idx, enemyIdx){
 
     logMsg({G, ctx}, `${card.name} attacks ${enemy.name}`)
 
-    if(card.onAttack){
-        card.onAttack.split(' ').map((fn)=>onAttackEffect[fn]({G, ctx, random, events}, card))
+    if(card.effect.onAttack){
+        card.effect.onAttack.split(' ').map((fn)=>onAttackEffect[fn]({G, ctx, random, events}, card))
     }
 
-    if(enemy.onDefense){
-        enemy.onDefense.split(' ').map((fn)=>onDefenseEffect[fn]({G, ctx, random, events}, enemy))
+    if(enemy.effect.onDefense){
+        enemy.effect.onDefense.split(' ').map((fn)=>onDefenseEffect[fn]({G, ctx, random, events}, enemy))
     }
 
     dealDamage({G, ctx, random, events}, card.atk, enemyIdx)
@@ -90,8 +88,8 @@ export function clearField({G, ctx, random, events}){
 
 export function out({G, ctx, random, events}, idx){
     const card = G.field[idx]
-    if(card.onOut){
-        card.onOut.split(' ').map((fn)=>onOutEffect[fn]({G, ctx, random, events}, card))
+    if(card.effect.onOut){
+        card.effect.onOut.split(' ').map((fn)=>onOutEffect[fn]({G, ctx, random, events}, card))
     }
     G.player[card.pid].graveyard.push(card.name)
     logMsg({G, ctx}, `${card.name} at (${Math.floor(idx/4)}, ${idx%4}) went to a better place`)
@@ -171,8 +169,8 @@ function move({G, ctx, random, events}, idx, endIdx) {
 
     // Move the minion
 
-    if(card.onMove){
-        card.onMove.split(' ').map((fn)=>onMoveEffect[fn]({G, ctx, random, events}, card))
+    if(card.effect.onMove){
+        card.effect.onMove.split(' ').map((fn)=>onMoveEffect[fn]({G, ctx, random, events}, card))
     }
 
     let trap
@@ -200,11 +198,11 @@ function switchPlaces({G, ctx, random, events}, idx, idx2){
     G.field[idx] = card2
     G.field[idx2] = card
     
-    if(card.onMove){
-        card.onMove.split(' ').map((fn)=>onMoveEffect[fn]({G, ctx, random, events}, card))
+    if(card.effect.onMove){
+        card.effect.onMove.split(' ').map((fn)=>onMoveEffect[fn]({G, ctx, random, events}, card))
     }
-    if(card2.onMove){
-        card2.onMove.split(' ').map((fn)=>onMoveEffect[fn]({G, ctx, random, events}, card2))
+    if(card2.effect.onMove){
+        card2.effect.onMove.split(' ').map((fn)=>onMoveEffect[fn]({G, ctx, random, events}, card2))
     }
 
     logMsg({G, ctx}, `Minion switches places between (${Math.floor(idx/4)}, ${idx%4}) and (${Math.floor(idx2/4)}, ${idx2%4}).`);
@@ -250,7 +248,7 @@ function logPrivateMsg({G, ctx}, msg, pid){
     G.player[pid].msg.push(msg)
 }
 
-/**detect and return adjacent squares of a input square with x, y index and the content*/
+/**Utility function. Return the adjacent indices of a index*/
 export function adjacentSquares(idx){
     let squares = [];
     for (const direction of [1,-1]) {
@@ -309,8 +307,8 @@ function playCard({G, ctx, random, events}, handIdx, fieldIdx){
         // Place the card on the field
         minionDeployInitialize({G, ctx, random, events}, card, ctx.currentPlayer, fieldIdx);
 
-        if(card.onPlay){
-            card.onPlay.split(' ').map((fn)=>onPlayEffect[fn]({G, ctx, random, events}, card))
+        if(card.effect.onPlay){
+            card.effect.onPlay.split(' ').map((fn)=>onPlayEffect[fn]({G, ctx, random, events}, card))
         }
     }
     else if(card.kind === "spell"){
@@ -328,8 +326,8 @@ function playCard({G, ctx, random, events}, handIdx, fieldIdx){
 
         minionDeployInitialize({G, ctx, random, events}, card, ctx.currentPlayer, fieldIdx);
 
-        if(card.onPlay){
-            card.onPlay.split(' ').map((fn)=>onPlayEffect[fn]({G, ctx, random, events}, card))
+        if(card.effect.onPlay){
+            card.effect.onPlay.split(' ').map((fn)=>onPlayEffect[fn]({G, ctx, random, events}, card))
         }
     }
 
@@ -449,12 +447,12 @@ export const Cardgame = {
             for(let card of G.field){
                 if(card){
                     if(card.pid===ctx.currentPlayer){
-                        if(card.onTurnBegin){
-                            card.onTurnBegin.split(' ').map((fn)=>onTurnBeginEffect[fn]({G, ctx, random, events}, card))
+                        if(card.effect.onTurnBegin){
+                            card.effect.onTurnBegin.split(' ').map((fn)=>onTurnBeginEffect[fn]({G, ctx, random, events}, card))
                         }
                     }
-                    if(card.onEveryTurnBegin){
-                        card.onEveryTurnBegin.split(' ').map((fn)=>onEveryTurnBeginEffect[fn]({G, ctx, random, events}, card))
+                    if(card.effect.onEveryTurnBegin){
+                        card.effect.onEveryTurnBegin.split(' ').map((fn)=>onEveryTurnBeginEffect[fn]({G, ctx, random, events}, card))
                     }
                 }
             }
@@ -465,12 +463,12 @@ export const Cardgame = {
                 if(card){
                     if(card.pid===ctx.currentPlayer){
                         card.exhausted = false
-                        if(card.onTurnEnd){
-                            card.onTurnEnd.split(' ').map((fn)=>onTurnEndEffect[fn]({G, ctx, random, events}, card))
+                        if(card.effect.onTurnEnd){
+                            card.effect.onTurnEnd.split(' ').map((fn)=>onTurnEndEffect[fn]({G, ctx, random, events}, card))
                         }
                     }
-                    if(card.onEveryTurnEnd){
-                        card.onEveryTurnEnd.split(' ').map((fn)=>onEveryTurnEndEffect[fn]({G, ctx, random, events}, card))
+                    if(card.effect.onEveryTurnEnd){
+                        card.effect.onEveryTurnEnd.split(' ').map((fn)=>onEveryTurnEndEffect[fn]({G, ctx, random, events}, card))
                     }
                 }
             }

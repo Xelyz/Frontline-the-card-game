@@ -7,6 +7,8 @@ export const CARDS=[
         hp: 1,
         kind: "minion",
         desc: '',
+        effect: {
+        },
         id: 1,
         img: 'url(/imgPack/goblin.png)',
         color: 'white',
@@ -18,7 +20,9 @@ export const CARDS=[
         hp: 1,
         kind: "minion",
         desc: 'Deploy: +2 hp',
-        onPlay: 'shield',
+        effect: {
+            onPlay: 'shield'
+        },
         id: 2,
         img: 'url(/imgPack/shield.png)',
         color: 'white',
@@ -30,7 +34,9 @@ export const CARDS=[
         hp: 4,
         kind: "minion",
         desc: 'When taking damage: draw a card',
-        onDamaged: 'thief',
+        effect: {
+            onDamaged: 'thief'
+        },
         id: 3,
         img: 'url(/imgPack/thief.png)',
         color: 'white',
@@ -42,8 +48,10 @@ export const CARDS=[
         hp: 5,
         kind: "minion",
         desc: 'Before battle: gain 2 atk',
-        onAttack: 'boxer',
-        onDefense: 'boxer',
+        effect: {
+            onAttack: 'boxer',
+            onDefense: 'boxer'
+        },
         id: 4,
         img: 'url(/imgPack/boxer.png)',
         color: 'white',
@@ -55,7 +63,9 @@ export const CARDS=[
         hp: 1,
         kind: "minion",
         desc: 'Cannot attack and cannot move. On the start of your turn: summon one 2/1 mini goblin on a random adjacent square',
-        onTurnBegin: 'portal',
+        effect: {
+            onTurnBegin: 'portal',
+        },
         cannotAttack: true,
         cannotMove: true,
         id: 5,
@@ -69,7 +79,9 @@ export const CARDS=[
         hp: 1,
         kind: "minion",
         desc: 'Deploy: summon a mouse on a random adjacent square',
-        onPlay: 'mouse',
+        effect: {
+            onPlay: 'mouse',
+        },
         id: 6,
         img: 'url(/imgPack/mouse.png)',
         color: 'white',
@@ -81,7 +93,9 @@ export const CARDS=[
         hp: 3,
         kind: "minion",
         desc: "Cannot move. Deal 1 damage to opponent's hero at the start of every turn",
-        onEveryTurnBegin: 'archerTower',
+        effect: {
+            onEveryTurnBegin: 'archerTower',
+        },
         cannotMove: true,
         id: 7,
         img: 'url(/imgPack/archer_tower.png)',
@@ -127,7 +141,9 @@ export const CARDS=[
         hp: 3,
         kind: "minion",
         desc: "Deploy: add an Assassinate into your hand",
-        onPlay: "assassin",
+        effect: {
+            onPlay: "assassin",
+        },
         id: 11,
         img: 'url(/imgPack/assassin.png)',
         color: 'white',
@@ -139,6 +155,8 @@ export const CARDS=[
         hp: 1,
         kind: "trap",
         desc: "Trigger: deal 1 damage",
+        effect: {
+        },
         id: 12,
         img: 'url(/imgPack/mouse_trap.png)',
         color: 'green',
@@ -153,6 +171,8 @@ export const CARDS=[
         hp: 1,
         kind: "minion",
         desc: "* Maybe there is a way to fix this? *",
+        effect: {
+        },
         id: 13,
         img: 'url(/imgPack/broken_sword_blade.png)',
         color: 'white',
@@ -164,6 +184,8 @@ export const CARDS=[
         hp: 5,
         kind: "minion",
         desc: "* Maybe there is a way to fix this? *",
+        effect: {
+        },
         id: 14,
         img: 'url(/imgPack/broken_sword_hilt.png)',
         color: 'white',
@@ -175,6 +197,8 @@ export const CARDS=[
         hp: 7,
         kind: "minion",
         desc: "* Maybe there is a way to fix this? *",
+        effect: {
+        },
         id: 15,
         img: 'url(/imgPack/broken_scabbard.png)',
         color: 'white',
@@ -186,6 +210,8 @@ export const CARDS=[
         hp: 4,
         kind: "minion",
         desc: "* Courage is all she has *",
+        effect: {
+        },
         id: 16,
         img: 'url(/imgPack/brave_warrier.png)',
         color: 'blue',
@@ -197,7 +223,9 @@ export const CARDS=[
         hp: 3,
         kind: "minion",
         desc: "Deploy: Deal 2 damage to your hero",
-        onPlay: "soulOfSoldier",
+        effect: {
+            onPlay: "soulOfSoldier",
+        },
         id: 17,
         img: 'url(/imgPack/soul_of_soldier.png)',
         color: 'white',
@@ -209,7 +237,9 @@ export const CARDS=[
         hp: 1,
         kind: "minion",
         desc: "On Death: Draw a card",
-        onOut: "magicBunny",
+        effect: {
+            onOut: "magicBunny",
+        },
         id: 18,
         img: 'url(/imgPack/magic_bunny.png)',
         color: 'green',
@@ -221,6 +251,8 @@ export const CARDS=[
         hp: 8,
         kind: "minion",
         desc: "",
+        effect: {
+        },
         id: 19,
         img: 'url(/imgPack/tiger.png)',
         color: 'white',
@@ -276,7 +308,9 @@ export const CARDS=[
         hp: 2,
         kind: "minion",
         desc: "Deploy: Deal 1 damage to all characters on its adjacent squares.",
-        onPlay: "doubleEdgedSword",
+        effect: {
+            onPlay: "doubleEdgedSword",
+        },
         id: 24,
         img: 'url(/imgPack/double_edged_sword.png)',
         color: 'white',
