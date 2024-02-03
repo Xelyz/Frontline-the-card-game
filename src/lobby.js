@@ -134,13 +134,24 @@ class Lobby extends Component {
     }
   };
   copyToClipboard = () => {
-    var textField = document.createElement('textarea');
-    textField.innerText = this.gameLinkBox.innerText;
-    textField.style.opacity = '0';
-    document.body.appendChild(textField);
-    textField.select();
-    document.execCommand('copy');
-    textField.remove();
+    // var textField = document.createElement('textarea');
+    // textField.innerText = this.gameLinkBox.innerText;
+    // textField.style.opacity = '0';
+    // document.body.appendChild(textField);
+    if(!navigator.clipboard){
+      document.execCommand('copy', false, this.gameLinkBox.innerText);
+    }
+    else{
+      navigator.clipboard.writeText(this.gameLinkBox.innerText).then(
+        function(){
+            
+        })
+      .catch(
+         function() {
+
+      });
+    }
+    
     this.setState({ copied: true });
     setTimeout(
       function () {
@@ -158,7 +169,7 @@ class Lobby extends Component {
             {this.props.isPublic ? 'Public lobby' : 'Private lobby'}
           </span>
           <br />
-          {this.props.ispublic?<><div
+          {this.props.isPublic?'Waiting for others to join':<><div
             className="game-link-box text-black"
             ref={(gameLinkBox) => (this.gameLinkBox = gameLinkBox)}
           >
@@ -166,7 +177,7 @@ class Lobby extends Component {
           </div>
           <div className="menu-button small" onClick={this.copyToClipboard}>
             {this.state.copied ? 'Copied!' : ' Copy '}
-          </div></>:'Waiting for others to join'}
+          </div></>}
         </div>
         {this.state.joined.length}{' '}
         <span>
