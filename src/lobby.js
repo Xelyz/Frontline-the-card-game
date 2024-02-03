@@ -134,10 +134,6 @@ class Lobby extends Component {
     }
   };
   copyToClipboard = () => {
-    // var textField = document.createElement('textarea');
-    // textField.innerText = this.gameLinkBox.innerText;
-    // textField.style.opacity = '0';
-    // document.body.appendChild(textField);
     if(!navigator.clipboard){
       document.execCommand('copy', false, this.gameLinkBox.innerText);
     }
