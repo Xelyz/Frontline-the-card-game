@@ -3,7 +3,8 @@ import './Board.css'
 import { adjacentSquares, enemyOf } from './Game';
 
 /**todo
- * visualize possible action squares
+ * deckbuilder
+ * how to play button
  */
 export function CardBoard({G, ctx, moves, playerID, events}) {
   const opponentID = enemyOf(playerID)
@@ -52,7 +53,7 @@ export function CardBoard({G, ctx, moves, playerID, events}) {
     for (let j = 0; j < 4; j++) {
       const idx = playerID === '0' ? 4 * i + j : 4 * (3-i) + 3 - j;//calculate tile idx
       const card = G.field[idx];
-      let content = ''
+      let content = <div className='cardImg'/>
       if(card){
         let style = {backgroundImage: card.img, backgroundSize: 'cover'}
         if(card.kind === 'trap' && card.pid !== playerID){
@@ -70,7 +71,7 @@ export function CardBoard({G, ctx, moves, playerID, events}) {
       let txt = ''
       const bgFilter = 'after:bg-white/25'
       if(G.field[idx] && G.field[idx].exhausted){
-        txt = bgFilter + " after:content-['zzz'] after:text-[rgb(0,0,255)]"
+        txt = "after:bg-black/20"
       }
       if(clicked === idx){
         border = 'border-[rgb(0,255,255)]'
@@ -151,7 +152,7 @@ export function CardBoard({G, ctx, moves, playerID, events}) {
 
   //Cards in hand display
   let cards = G.player[playerID].hand.map((content, id)=>
-    <div onClick={()=>handleClick(id + 16)} className={`cardBox border-solid border-2 bg-white/10 rounded transition-transform ${clicked===id+16?'border-[rgb(0,255,255)]':'border-black'} hover:scale-[0.97]`}>
+    <div onClick={()=>handleClick(id + 16)} className={`cardBox border-solid border-2 rounded transition-transform ${clicked===id+16?'border-[rgb(0,255,255)]':'border-black'} hover:scale-[0.97]`}>
       <div style={{backgroundImage: content.img, backgroundSize: 'cover'}} className='cardImg'/>
       <p className='atk text-lg' style={{color: 'cyan'}}>{content.atk}</p>
       <p className='hp text-lg' style={{color: 'cyan'}}>{content.hp}</p>
@@ -191,12 +192,13 @@ export function CardBoard({G, ctx, moves, playerID, events}) {
 
   return (
   <>
+    <div className='fixed rounded-xl bg-stone-100/40 backdrop-blur-lg h-[80%] aspect-square left-1/2 -translate-x-1/2 top-[15%]'></div>
     <div className='bodyPage'>
       <div className='flex flex-row ml-[110px] mt-[14%]'>
         <table className='bg-cover border-separate border-spacing-[2px]'>
           <tbody>{board}</tbody>
         </table>
-        <div className='rightBar my-auto pl-2 text-black font-semibold'>
+        <div className='rightBar my-auto pl-2 text-black font-semibold z-[1]'>
           <div>{movePointsE}</div>
           <span>cost: {G.player[opponentID].cost}/{G.player[opponentID].maxCost}</span>
           {endTurnButton}

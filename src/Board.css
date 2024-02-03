@@ -46,6 +46,8 @@ td,.cardBox{
 .atk, .hp, .cost{
     position: absolute;
     padding: 0px 5px;
+    background-color: rgba(0,0,0,0.4);
+    border-radius: 9999px;
 }
 
 .atk{
