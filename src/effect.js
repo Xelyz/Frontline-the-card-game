@@ -1,12 +1,19 @@
-import { adjacentSquares, clearField, dealDamage, draw, summon, out, enemyOf } from "./Game"
-import {CARDS} from "./Cards"
+import { adjacentSquares, clearField, dealDamage, draw, summon, out, enemyOf, heal } from "./Game"
+import {CARDS, DERIVATIVE} from "./Cards"
 
 export const onMoveEffect = {
     
 }
 
-export const onSurvivingDamageEffect = {
+export const onRecoverEffect = {
 
+}
+
+export const onSurvivingDamageEffect = {
+    monk: ({G, ctx}, card)=>{
+        card.hp+=1
+        card.currHp+=1
+    }
 }
 
 export const onPlayEffect = {
@@ -18,7 +25,7 @@ export const onPlayEffect = {
 
     /**Deploy: summon a mouse on a random adjacent square */
     mouse: ({G, ctx, random, events}, card) => {
-        summon({G, ctx, random, events}, {...CARDS.find(card => card.name === "Mouse")}, adjacentSquares(card.idx), card.pid)
+        summon({G, ctx, random, events}, {...DERIVATIVE.find(card => card.name === "Mouse")}, adjacentSquares(card.idx), card.pid)
     },
 
     /**Add an Assassinate into your hand */
@@ -45,6 +52,16 @@ export const onPlayEffect = {
         targets = targets.filter(idx => G.field[idx] !== null)
         targets.map(target => dealDamage({G, ctx, random, events}, 1, target))
         clearField({G, ctx, random, events})
+    },
+
+    healer: ({G, ctx, random, events}, card) => {
+        let targets = adjacentSquares(card.idx)
+        targets = targets.filter(idx => G.field[idx] !== null && G.field[idx].pid === card.pid)
+        targets.map(target => heal({G, ctx, random, events}, 1, target))
+    },
+
+    lordOfSpikes: ({G}, card) => {
+        G.effect[enemyOf(card.pid)].push('lordOfSpikes')
     }
 }
 
@@ -83,7 +100,7 @@ export const onDefenseEffect = {
 export const onTurnBeginEffect = {
     /**Summon one 2/1 mini goblin on a random adjacent square*/
     portal: ({G, ctx, random, events}, card)=>{
-        summon({G, ctx, random, events}, {...CARDS.find(card => card.name === "Goblin")}, adjacentSquares(card.idx), card.pid)
+        summon({G, ctx, random, events}, {...DERIVATIVE.find(card => card.name === "Goblin")}, adjacentSquares(card.idx), card.pid)
     }
 }
 
@@ -175,6 +192,11 @@ export const SpellEffect = {
                 G.field[idx].currHp+=1
             }
         }
+    },
+
+    fireBall: ({G, ctx, random, events}, targetIdx)=>{
+        dealDamage({G, ctx, random, events}, 3, targetIdx)
+        clearField({G, ctx, random, events})
     }
 }
 

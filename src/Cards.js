@@ -1,19 +1,6 @@
 /**the list of all cards */
 export const CARDS=[
     {
-        name: "Goblin",
-        cost: 1,
-        atk: 2,
-        hp: 1,
-        kind: "minion",
-        desc: '',
-        effect: {
-        },
-        id: 1,
-        img: 'url(/imgPack/goblin.png)',
-        color: 'white',
-    },
-    {
         name: "Shield",
         cost: 1,
         atk: 1,
@@ -261,9 +248,9 @@ export const CARDS=[
         name: "Stab",
         cost: 1,
         kind: "spell",
-        desc: "Deal 2 damage",
+        desc: "Deal 2 damage to an enemy minion",
         spell: "stab",
-        target: "minion",
+        target: "enemy minion",
         id: 20,
         img: 'url(/imgPack/stab.png)',
         color: 'white',
@@ -314,5 +301,84 @@ export const CARDS=[
         id: 24,
         img: 'url(/imgPack/double_edged_sword.png)',
         color: 'white',
+    },
+    {
+        name: "Monk",
+        cost: 6,
+        atk: 4,
+        hp: 7,
+        kind: "minion",
+        desc: "Survive: +1hp",
+        effect: {
+            onSurvivingDamage: 'monk'
+        },
+        id: 25,
+        img: 'url(/imgPack/monk.png)',
+        color: 'white',
+    },
+    {
+        name: "Fire Ball",
+        cost: 2,
+        kind: "spell",
+        desc: "Deal 3 damage",
+        spell: "fireBall",
+        target: "unit",
+        id: 26,
+        img: 'url(/imgPack/fire_ball.png)',
+        color: 'green',
+    },
+    {
+        name: "Healer",
+        cost: 1,
+        atk: 1,
+        hp: 1,
+        kind: "minion",
+        desc: "Deploy: Heal adjacent ally units 2 hp",
+        effect: {
+            onPlay: "healer"
+        },
+        id: 27,
+        img: 'url(/imgPack/healer.png)',
+        color: 'white',
+    },
+    {
+        name: "Lord of Spikes",
+        cost: 4,
+        atk: 3,
+        hp: 3,
+        kind: "minion",
+        desc: "Deploy: Enemy's next turn, deal 2 damage to the unit who take any action",
+        effect: {
+            onPlay: "lordOfSpikes"
+        },
+        id: 28,
+        img: 'url(/imgPack/lord_of_spikes.png)',
+        color: 'green',
+    },
+]
+
+export const DERIVATIVE = [
+    {
+        name: "Goblin",
+        cost: 1,
+        atk: 2,
+        hp: 1,
+        kind: "minion",
+        desc: '',
+        effect: {
+        },
+        id: 1001,
+        img: 'url(/imgPack/goblin.png)',
+    },
+    {
+        name: "Mouse",
+        cost: 2,
+        atk: 1,
+        hp: 1,
+        kind: "minion",
+        desc: "**It's name is not Jerry**",
+        effect: {},
+        id: 1002,
+        img: 'url(/imgPack/mouse.png)',
     },
 ]

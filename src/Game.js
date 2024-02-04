@@ -1,6 +1,6 @@
 import { INVALID_MOVE } from 'boardgame.io/core'
 import {CARDS} from './Cards'
-import {onPlayEffect, onOutEffect, onDamagedEffect, onAttackEffect, onDefenseEffect, onTurnBeginEffect, onEveryTurnBeginEffect, SpellEffect, onMoveEffect, onSurvivingDamageEffect, triggerEffect, onTurnEndEffect, onEveryTurnEndEffect} from './effect'
+import {onPlayEffect, onOutEffect, onDamagedEffect, onAttackEffect, onDefenseEffect, onTurnBeginEffect, onEveryTurnBeginEffect, SpellEffect, onMoveEffect, onSurvivingDamageEffect, triggerEffect, onTurnEndEffect, onEveryTurnEndEffect, onRecoverEffect} from './effect'
 import { HEROS } from './hero'
 
 /*
@@ -47,6 +47,25 @@ export function dealDamage({G, ctx, random, events}, dmg, idx){
         }
         if(card.currHp > 0 && card.effect.onSurvivingDamage){
             card.effect.onSurvivingDamage.split(' ').map((fn)=>onSurvivingDamageEffect[fn]({G, ctx, random, events}, card))
+        }
+    }
+}
+
+export function heal({G, ctx, random, events}, healing, idx){
+    if(G.field[idx] === null){
+        return
+    }
+    const card = G.field[idx]
+    if(card.currHp+healing<card.hp){
+        card.currHp+=healing
+    }else{
+        healing = card.hp-card.currHp
+        card.currHp = card.hp
+    }
+
+    if(healing > 0){
+        if(card.effect.onRecover){
+            card.effect.onRecover.split(' ').map((fn)=>onRecoverEffect[fn]({G, ctx, random, events}, card))
         }
     }
 }
@@ -136,6 +155,10 @@ function setupGame({G, random}){
     G.field = Array(16).fill(null)
     G.gameReview = []
     G.handLimit = 10
+    G.effect = {
+        0:[],
+        1:[]
+    }
     G.player = {
         '0': {
         hand: [],
@@ -285,11 +308,6 @@ function playCard({G, ctx, random, events}, handIdx, fieldIdx){
         return
     }
 
-    player.hand.splice(handIdx, 1);
-
-    // Deduct the cost from the player's available cost
-    player.cost -= card.cost;
-
     if(card.kind === "minion"){
         // Check if the specified position on the field is empty
         if (G.field[fieldIdx] && G.field[fieldIdx].kind !== "trap") {
@@ -330,6 +348,11 @@ function playCard({G, ctx, random, events}, handIdx, fieldIdx){
             card.effect.onPlay.split(' ').map((fn)=>onPlayEffect[fn]({G, ctx, random, events}, card))
         }
     }
+
+    player.hand.splice(handIdx, 1);
+
+    // Deduct the cost from the player's available cost
+    player.cost -= card.cost;
 
     logMsg({G, ctx}, `player ${ctx.currentPlayer} played ${card.name} at (${Math.floor(fieldIdx/4)}, ${fieldIdx%4})`)
 }
@@ -378,6 +401,10 @@ function action({G, ctx, random, events}, fromId, toId){
             return
         }
 
+        if(G.effect[ctx.currentPlayer].includes("lordOfSpikes")){
+            dealDamage({G, ctx, random, events}, 2, fromId)
+        }
+
         move({G, ctx, random, events}, fromId, toId)
     }
     else if(G.field[toId].pid === card.pid){
@@ -403,6 +430,11 @@ function action({G, ctx, random, events}, fromId, toId){
             return
         }
 
+        if(G.effect[ctx.currentPlayer].includes("lordOfSpikes")){
+            dealDamage({G, ctx, random, events}, 2, fromId)
+            dealDamage({G, ctx, random, events}, 2, toId)
+        }
+
         switchPlaces({G, ctx, random, events}, fromId, toId)
     }
     else{
@@ -411,6 +443,11 @@ function action({G, ctx, random, events}, fromId, toId){
             logPrivateMsg({G, ctx}, "Attack failed: minion has 'cannot attack'", ctx.currentPlayer)
             return
         }
+
+        if(G.effect[ctx.currentPlayer].includes("lordOfSpikes")){
+            dealDamage({G, ctx, random, events}, 2, fromId)
+        }
+
         battle({G, ctx, random, events}, fromId, toId)
     }
 }
@@ -472,6 +509,7 @@ export const Cardgame = {
                     }
                 }
             }
+            G.effect[ctx.currentPlayer]=[]
         }
     },
 }
