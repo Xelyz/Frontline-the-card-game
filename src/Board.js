@@ -152,7 +152,7 @@ export function CardBoard({G, ctx, moves, playerID, events}) {
 
   //Cards in hand display
   let cards = G.player[playerID].hand.map((content, id)=>
-    <div onClick={()=>handleClick(id + 16)} className={`cardBox border-solid border-2 rounded transition-transform ${clicked===id+16?'border-[rgb(0,255,255)]':'border-black'} hover:scale-[0.97]`}>
+    <div onClick={()=>handleClick(id + 16)} className={`cardBox border-solid border-2 rounded transition-transform ${clicked===id+16?'border-[rgb(0,255,255)]':'border-black'} hover:scale-[0.97] z-[1]`}>
       <div style={{backgroundImage: content.img, backgroundSize: 'cover'}} className='cardImg'/>
       <p className='atk text-lg' style={{color: 'cyan'}}>{content.atk}</p>
       <p className='hp text-lg' style={{color: 'cyan'}}>{content.hp}</p>
@@ -165,7 +165,7 @@ export function CardBoard({G, ctx, moves, playerID, events}) {
   let cardData = <div/>
   if(clicked !== false){
     const cardSelected = clicked < 16 ? G.field[clicked] : G.player[playerID].hand[clicked-16]
-    cardData = cardSelected ? <div className='absolute left-10 top-1/2 -translate-y-2/3'>
+    cardData = cardSelected ? <div className='absolute left-10 top-1/2 -translate-y-2/3 z-[1]'>
       <div className='relative rounded-md bg-white shadow-lg h-[500px] w-80 my-7 box-content text-center'>
         <div className='w-80 h-80 rounded-md bg-slate-200' style={{backgroundImage: cardSelected.img, backgroundSize: 'cover'}}/>
         <p className='atk text-3xl' style={{color: 'cyan'}}>{cardSelected.atk}</p>
@@ -194,11 +194,11 @@ export function CardBoard({G, ctx, moves, playerID, events}) {
   <>
     <div className='fixed rounded-xl bg-stone-100/40 backdrop-blur-lg h-[80%] aspect-square left-1/2 -translate-x-1/2 top-[15%]'></div>
     <div className='bodyPage'>
-      <div className='flex flex-row ml-[110px] mt-[14%]'>
+      <div className='flex flex-row ml-[110px] mt-[14%] z-[1]'>
         <table className='bg-cover border-separate border-spacing-[2px]'>
           <tbody>{board}</tbody>
         </table>
-        <div className='rightBar my-auto pl-2 text-black font-semibold z-[1]'>
+        <div className='rightBar my-auto pl-2 text-black font-semibold'>
           <div>{movePointsE}</div>
           <span>cost: {G.player[opponentID].cost}/{G.player[opponentID].maxCost}</span>
           {endTurnButton}
