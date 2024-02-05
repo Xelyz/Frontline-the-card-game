@@ -330,6 +330,21 @@ function playCard({G, ctx, random, events}, handIdx, fieldIdx){
         }
     }
     else if(card.kind === "spell"){
+        const targets = card.target
+        for(let target of targets.split(' ')){
+            if(
+            (target === "enemy" && G.field[fieldIdx].pid === enemyOf(ctx.currentPlayer))
+            || (target === "ally" && G.field[fieldIdx].pid === ctx.currentPlayer)
+            || (target === "minion" && G.field[fieldIdx].kind === "minion")
+            || (target === "hero" && G.field[fieldIdx].kind === "hero")
+            || (target === "unit" && (G.field[fieldIdx].kind === "minion" || G.field[fieldIdx].kind === "hero"))
+            || target === "any"
+            || target === "field"
+            ){
+            }else{
+                return
+            }
+        }
         card.pid = ctx.currentPlayer
         card.spell.split(' ').map((fn)=>SpellEffect[fn]({G, ctx, random, events, card}, fieldIdx))
         if(G.invalid){
