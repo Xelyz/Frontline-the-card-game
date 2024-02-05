@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './Board.css'
 import { adjacentSquares, enemyOf } from './Game';
+import useSound from 'use-sound';
 
 /**todo
  * deckbuilder
@@ -9,6 +10,7 @@ import { adjacentSquares, enemyOf } from './Game';
 export function CardBoard({G, ctx, moves, playerID, events}) {
   const opponentID = enemyOf(playerID)
   const [clicked, setClicked] = useState(false)
+  const [playCardSound] = useSound('/playCard.flac')
 
   function handleClick(id){
     if(clicked===false){
@@ -18,6 +20,7 @@ export function CardBoard({G, ctx, moves, playerID, events}) {
       //second click
       if(clicked > 15 && id <= 15){
         moves.playCard(clicked-16, id)
+        playCardSound()
         setClicked(false)
       }else if(clicked === id){
         setClicked(false)
