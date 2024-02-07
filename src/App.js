@@ -7,6 +7,7 @@ import HomePage from './Homepage';
 import JoinPage from './Joinpage';
 import Lobby from './lobby';
 import { Component } from 'react';
+import DeckBuilder from './DeckBuilder';
 
 const Game = Client({
   game: Cardgame,
@@ -30,6 +31,11 @@ class App extends Component{
           path="/join"
           exact
           element={<JoinPage/>}
+        />
+        <Route
+          path="/deck"
+          exact
+          element={<DeckBuilder/>}
         />
         <Route path="/demo" exact element={<><Game playerID="0" demo="true"/><Game playerID="1" demo="true"/></>}/>
         <Route path="/lobby/:id" element={<Lobby/>}/>
