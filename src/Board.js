@@ -195,7 +195,7 @@ export function CardBoard({G, ctx, moves, playerID, events}) {
 
   return (
   <>
-    <div className='fixed rounded-xl bg-stone-100/40 backdrop-blur-lg h-[80%] aspect-square left-1/2 -translate-x-1/2 top-[15%]'></div>
+    <div className='fixed rounded-xl Bgfilter backdrop-blur-lg h-[80%] aspect-square left-1/2 -translate-x-1/2 top-[15%]'></div>
     <div className='bodyPage'>
       <div className='flex flex-row ml-[110px] mt-[14%] z-[1]'>
         <table className='bg-cover border-separate border-spacing-[2px]'>

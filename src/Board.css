@@ -95,3 +95,8 @@ td,.cardBox{
     align-items: center;
     justify-content: center;
 }
+
+.Bgfilter{
+    background: rgb(245,245,244);
+    background: radial-gradient(circle, rgba(245,245,244,0.4) 0%, rgba(245,245,244,0.4) 55%, rgba(245,245,244,0) 100%);
+}
