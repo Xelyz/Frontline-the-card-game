@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Board.css'
 import { adjacentSquares, enemyOf } from './Game';
 import useSound from 'use-sound';
@@ -7,7 +7,7 @@ import useSound from 'use-sound';
  * deckbuilder
  * how to play button
  */
-export function CardBoard({G, ctx, moves, playerID, events}) {
+export function CardBoard({G, ctx, moves, playerID, events, isActive}) {
   const opponentID = enemyOf(playerID)
   const [clicked, setClicked] = useState(false)
   const [playCardSound] = useSound('/playCard.flac')
@@ -78,6 +78,8 @@ export function CardBoard({G, ctx, moves, playerID, events}) {
       }
       if(clicked === idx){
         border = 'border-[rgb(0,255,255)]'
+      }
+      else if(!isActive){
       }
       else if(G.field[clicked] && G.field[clicked].pid === playerID){
         if(G.field[clicked].exhausted){
@@ -150,8 +152,21 @@ export function CardBoard({G, ctx, moves, playerID, events}) {
     board.push(<tr key={i}>{line}</tr>);
   }
 
+  useEffect(() => {
+    const turnIndicator = document.getElementById('turnIndicator')
+    if(isActive){
+      turnIndicator.innerHTML = 'Your Turn'
+    }else{
+      turnIndicator.innerHTML = 'Enemy\'s Turn'
+    }
+    turnIndicator.style.color = 'white'
+    setTimeout(()=>{
+      turnIndicator.style.color = 'transparent'
+    }, 3000)
+  }, [isActive])
+
   //end turn button
-  const endTurnButton = <button id='endTurn' onClick={()=>events.endTurn()} className="bg-slate-300 rounded">{ctx.currentPlayer===playerID?"End Turn":"Op Turn"}</button>
+  const endTurnButton = <button id='endTurn' onClick={()=>events.endTurn()} className="bg-slate-300 rounded">{ctx.currentPlayer===playerID?"End Turn":"Enemy Turn"}</button>
 
   //Cards in hand display
   let cards = G.player[playerID].hand.map((content, id)=>
@@ -196,6 +211,7 @@ export function CardBoard({G, ctx, moves, playerID, events}) {
   return (
   <>
     <div className='fixed rounded-xl Bgfilter backdrop-blur-lg h-[80%] aspect-square left-1/2 -translate-x-1/2 top-[15%]'></div>
+    <div id='turnIndicator' className='fixed top-[5%] left-1/2 -translate-x-1/2 text-center text-5xl font-mono duration-1000 transition-colors'></div>
     <div className='bodyPage'>
       <div className='flex flex-row ml-[110px] mt-[14%] z-[1]'>
         <table className='bg-cover border-separate border-spacing-[2px]'>
