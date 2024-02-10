@@ -1,5 +1,5 @@
 import { INVALID_MOVE } from 'boardgame.io/core'
-import {CARDS} from './Cards'
+import {CARDS, DERIVATIVE} from './Cards'
 import {onPlayEffect, onOutEffect, onDamagedEffect, onAttackEffect, onDefenseEffect, onTurnBeginEffect, onEveryTurnBeginEffect, SpellEffect, onMoveEffect, onSurvivingDamageEffect, triggerEffect, onTurnEndEffect, onEveryTurnEndEffect, onRecoverEffect} from './effect'
 import { HEROS } from './hero'
 
@@ -257,7 +257,7 @@ function setTrap({G, ctx, random, events}, idx, trap){
         logPrivateMsg({G, ctx}, `You don't have enough trap`, ctx.currentPlayer);
         return
     }
-    minionDeployInitialize({G, ctx, random, events}, {...CARDS.find((card) => card.name === trap)}, ctx.currentPlayer, idx)
+    minionDeployInitialize({G, ctx, random, events}, {...DERIVATIVE.find((card) => card.name === trap)}, ctx.currentPlayer, idx)
     G.player[ctx.currentPlayer].trap--
 }
 

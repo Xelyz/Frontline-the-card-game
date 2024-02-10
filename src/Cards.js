@@ -136,22 +136,6 @@ export const CARDS=[
         color: 'white',
     },
     {
-        name: "Mouse Trap",
-        cost: 0,
-        atk: 0,
-        hp: 1,
-        kind: "trap",
-        desc: "Trigger: deal 1 damage",
-        effect: {
-        },
-        id: 12,
-        img: 'url(/imgPack/mouse_trap.png)',
-        color: 'green',
-        cannotAttack: true,
-        cannotMove: true,
-        trigger: 'mouseTrap',
-    },
-    {
         name: "Broken Sword Blade",
         cost: 3,
         atk: 5,
@@ -380,5 +364,20 @@ export const DERIVATIVE = [
         effect: {},
         id: 1002,
         img: 'url(/imgPack/mouse.png)',
+    },
+    {
+        name: "Mouse Trap",
+        cost: 0,
+        atk: 0,
+        hp: 1,
+        kind: "trap",
+        desc: "Trigger: deal 1 damage",
+        effect: {
+        },
+        id: 1003,
+        img: 'url(/imgPack/mouse_trap.png)',
+        cannotAttack: true,
+        cannotMove: true,
+        trigger: 'mouseTrap',
     },
 ]
