@@ -208,8 +208,7 @@ export function CardBoard({G, ctx, moves, playerID, events, isActive}) {
     movePointsE.push(<span className='inline-block rounded-full bg-red-500 h-2 w-2 m-[2px]'></span>)
   }
 
-  return (
-  <>
+  const gameBoard = <>
     <div className='fixed rounded-xl Bgfilter backdrop-blur-lg h-[80%] aspect-square left-1/2 -translate-x-1/2 top-[15%]'></div>
     <div id='turnIndicator' className='fixed top-[5%] left-1/2 -translate-x-1/2 text-center text-5xl font-mono duration-1000 transition-colors'></div>
     <div className='bodyPage'>
@@ -228,6 +227,8 @@ export function CardBoard({G, ctx, moves, playerID, events, isActive}) {
       {handCards}
       {cardData}
     </div>
+    <button className='w-16 h-16 absolute bottom-5 right-5 rounded bg-slate-200 text-2xl border-black border' onClick={()=>{window.open('https://github.com/Xelyz/Frontline-rules/blob/main/ruleBook.md', '_blank')}}>Rules</button>
   </>
-  )
+
+  return gameBoard
 }
