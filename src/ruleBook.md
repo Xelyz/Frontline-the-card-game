@@ -5,8 +5,8 @@ CardMonster is a turn-based strategic card game where players use a variety of c
 1. **Game Board**: A 4x4 grid where players deploy cards to engage in battles (called field).
 2. **Cards**: Basic resource to be able to play the game. 
 	1. *Minion Cards*: Can only be placed on a tile that is adjacent to another tile containing an ally hero or minion. Minion cards have its own health points, attack power and abilities. When a minion card's health is reduced to (or below) 0, that card is removed from the field.
-	2. *Structure Cards*: similar to *minion cards* but it cannot move
-	3. *Spell Cards*: Can be played on any tile on the field. Trigger its effect on the selected tile
+	2. *Trap Cards*: Can be played on any empoty tile on the board. It is not visible by the opponent. When any units(minions and heros) move to or are played at the same tile as a trap, the trap is triggered accordingly to the description(mostly dealing damage)
+	3. *Spell Cards*: Can be played on any tile on the field. Trigger its effect on the selected tile. Green borders will indicate the valid tiles for casting the spell. 
 3. **Heroes**: Each player has a hero character with 0 attack power, large health points, and special abilities. 
 4. **Mana**: A resource used for playing cards. The gold bar represent the current and maximum mana a player currently have. The limit of max-mana is 10
 
@@ -21,12 +21,11 @@ The objective of this game is to reduce the opponent's hero's health points to z
 ## Game Play
 
 ### Turn Structure
-Each turn in {The name of my card game} is divided into several parts, in order:
+Each turn in Frontline is divided into several parts, in order:
 
-1. **Turn Begins**: Player gain 1 max-mana, and their mana is filled to the same amount as max-mana. *Exhaustions* are removed. Player draw a card to hand from their deck.
+1. **Turn Begins**: Player gain 1 max-mana, and their mana is filled to the same amount as max-mana. Player draw a card to hand from their deck.
 2. **Action**: Here players can play cards from their hand onto the board, move cards on the board, or engage in battles with their opponent's cards. 
-3. **Turn Ends**: Players end their turn. The opponent starts their turn.
-
+3. **Turn Ends**: Players end their turn. The opponent starts their turn. *Exhaustions* are removed.
 
 ### Playing Cards
 - **Deploying Cards**: Players can play their card by paying the relative cost and choose a legal tile on the field. It is done by clicking the card in the hand and then clicking the tile on the field where you want to play the card
