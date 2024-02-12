@@ -18,6 +18,7 @@ const Game = Client({
   numPlayers: 2,
   multiplayer: SocketIO({ server: address }),
   seed: 114,
+  debug: false,
 });
 
 class Lobby extends Component {
