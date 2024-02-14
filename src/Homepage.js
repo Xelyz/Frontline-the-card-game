@@ -67,6 +67,7 @@ class HomePage extends Component {
   render() {
     return (
       <>
+          <button className='w-16 h-16 absolute bottom-5 right-5 rounded bg-slate-200 text-2xl border-black border' onClick={()=>{window.open('https://github.com/Xelyz/Frontline-rules/blob/main/ruleBook.md', '_blank')}}>Rules</button>
           <p className='text-[160px] text-white bg-black/10 w-full absolute top-1/3 -translate-y-1/2 text-center' style={{fontFamily: 'Title, Arial, sans-serif'}}>FRONTLINE</p>
           <div className='text-center text-2xl mb-20 w-full fixed bottom-0 left-0 right-0'>
             <div
