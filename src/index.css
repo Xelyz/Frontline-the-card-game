@@ -15,3 +15,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+@font-face {
+  font-family: Title; /* Provide a name for your custom font */
+  src: url('./HARRYP__.TTF'); /* Specify the path to your font file */
+}

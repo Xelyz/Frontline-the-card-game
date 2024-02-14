@@ -67,6 +67,7 @@ class HomePage extends Component {
   render() {
     return (
       <>
+          <p className='text-[160px] text-white bg-black/10 w-full absolute top-1/3 -translate-y-1/2 text-center' style={{fontFamily: 'Title, Arial, sans-serif'}}>FRONTLINE</p>
           <div className='text-center text-2xl mb-20 w-full fixed bottom-0 left-0 right-0'>
             <div
               className="menu-button"
@@ -90,6 +91,15 @@ class HomePage extends Component {
               }}
             >
               <span>Join Others</span>
+            </div>
+            <div
+              className="menu-button"
+              id="deck"
+              onClick={() => {
+                this.props.navigate('/deck');
+              }}
+            >
+              <span>Deck</span>
             </div>
           </div>
       </>
