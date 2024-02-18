@@ -331,7 +331,7 @@ export const CARDS=[
         atk: 3,
         hp: 3,
         kind: "minion",
-        desc: "Deploy: Enemy's next turn, deal 2 damage to the unit who take any action",
+        desc: "Deploy: Enemy's next turn, deal 2 damage to any unit who take any action",
         effect: {
             onPlay: "lordOfSpikes"
         },
