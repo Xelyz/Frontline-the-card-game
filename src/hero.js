@@ -14,11 +14,11 @@ export const HEROS=[
     },
     {
         name: "Riven",
-        atk: 2,
+        atk: 1,
         hp: 20,
         kind: 'hero',
         color: 'blue',
-        desc: '**Permanently has 2 atk**',
+        desc: '**Permanently has 1 atk**',
         effect: {
             onOut: 'lose'
         },
