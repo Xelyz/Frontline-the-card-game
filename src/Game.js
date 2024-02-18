@@ -162,7 +162,7 @@ function setupGame({G, random}){
     G.player = {
         '0': {
         hand: [],
-        hero: 'green',
+        hero: 'blue',
         deck: random.Shuffle([...CARDS]),
         msg: [],
         cost: 0,
