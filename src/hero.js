@@ -10,6 +10,9 @@ export const HEROS=[
         effect: {
             onOut: 'lose'
         },
+        trait: {
+            charge: true,
+        },
         img: 'url(/imgPack/Seraphina.png)',
     },
     {
@@ -21,6 +24,9 @@ export const HEROS=[
         desc: '**Permanently has 1 atk**',
         effect: {
             onOut: 'lose'
+        },
+        trait: {
+            charge: true,
         },
         img: 'url(/imgPack/Riven.png)',
     },
