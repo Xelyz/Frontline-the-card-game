@@ -2,6 +2,7 @@ import { INVALID_MOVE } from 'boardgame.io/core'
 import {CARDS, DERIVATIVE} from './Cards'
 import {onPlayEffect, onOutEffect, onDamagedEffect, onAttackEffect, onDefenseEffect, onTurnBeginEffect, onEveryTurnBeginEffect, SpellEffect, onMoveEffect, onSurvivingDamageEffect, triggerEffect, onTurnEndEffect, onEveryTurnEndEffect, onRecoverEffect} from './effect'
 import { HEROS } from './hero'
+import { TurnOrder } from 'boardgame.io/core';
 
 /*
 todo:
@@ -21,6 +22,9 @@ function minionDeployInitialize({G, ctx, random, events}, card, pid, fieldIdx){
     card.pid = pid
     card.currHp = card.hp
     card.exhausted = true
+    if(card.trait && card.trait.charge){
+        card.exhausted = false
+    }
     card.idx = fieldIdx
     let trap
     if(G.field[fieldIdx] && G.field[fieldIdx].kind === "trap"){
@@ -136,15 +140,16 @@ export function draw({G, ctx, random, events}, pid){
 }
 
 function gameInitialize({G, ctx, random, events}){
-    setupGame({G, random})
     G.turnNum = 0
+    G.player[0].deck = random.Shuffle(G.player[0].deck)
+    G.player[1].deck = random.Shuffle(G.player[1].deck)
     minionDeployInitialize({G, ctx, random, events}, {...HEROS.find(hero => hero.color===G.player[0].hero)}, '0', 0)
     minionDeployInitialize({G, ctx, random, events}, {...HEROS.find(hero => hero.color===G.player[1].hero)}, '1', 15)
     for(let i=0;i<3;i++){
-        draw({G, ctx, random, events}, '0')
+        draw({G, ctx, random, events}, G.order[0])
     }
     for(let i=0;i<4;i++){
-        draw({G, ctx, random, events}, '1')
+        draw({G, ctx, random, events}, G.order[1])
     }
 
     logMsg({G, ctx, random, events}, "Game initialized")
@@ -153,6 +158,7 @@ function gameInitialize({G, ctx, random, events}){
 /**setup the game*/
 function setupGame({G, random}){
     G.field = Array(16).fill(null)
+    G.order = random.Shuffle(['0', '1'])
     G.gameReview = []
     G.handLimit = 10
     G.effect = {
@@ -163,7 +169,7 @@ function setupGame({G, random}){
         '0': {
         hand: [],
         hero: 'blue',
-        deck: random.Shuffle([...CARDS]),
+        deck: null,
         msg: [],
         cost: 0,
         maxCost: 0,
@@ -174,7 +180,7 @@ function setupGame({G, random}){
         '1': {
         hand: [],
         hero: 'blue',
-        deck: random.Shuffle([...CARDS]),
+        deck: null,
         msg: [],
         cost: 0,
         maxCost: 0,
@@ -373,9 +379,9 @@ function playCard({G, ctx, random, events}, handIdx, fieldIdx){
 }
 
 /**Triggers in boardgame.io setup. Calls gameInitialize to setup the game */
-function set({ctx, events, random}){
+function set({random}){
     const G = {};
-    gameInitialize({G, ctx, random, events})
+    setupGame({G, random})
     return G
 }
 
@@ -467,64 +473,99 @@ function action({G, ctx, random, events}, fromId, toId){
     }
 }
 
+function inputDeck({G, events}, deck, pid){
+    try{
+        if(deck.length === 60){
+            const cardsId = deck.match(/.{1,2}/g)
+            G.player[pid].deck = cardsId.map(str=>parseInt(str, 16)).map(id=>CARDS.find(card=>card.id===id))
+            events.endTurn()
+        }
+    }catch{
+        return
+    }
+}
+
 /**The game object */
 export const Cardgame = {
     name: 'Cardgame',
     
     setup: set,
     
-    moves: {
-        playCard,
-        gameInitialize,
-        action,
-        setTrap,
-    },
+    phases: {
+        construct: {
+            moves: {
+                inputDeck,
+            },
 
-    turn: {
-        onBegin: ({G, ctx, random, events}) => {
-            const player = G.player[ctx.currentPlayer];
+            start: true,
 
-            draw({G, ctx, random, events}, ctx.currentPlayer)
-            if(player.maxCost<10){
-                player.maxCost+=1
-            }
-            player.cost = player.maxCost
-            G.turnNum += 1
-            player.movePt = G.turnNum === 1 ? 1 : 2
+            endIf: ({G})=>{
+                return G.player[0].deck !== null && G.player[1].deck !== null
+            },
 
-            if(player.hero === 'green'){
-                player.trap = 1
-            }
-
-            for(let card of G.field){
-                if(card){
-                    if(card.pid===ctx.currentPlayer){
-                        if(card.effect.onTurnBegin){
-                            card.effect.onTurnBegin.split(' ').map((fn)=>onTurnBeginEffect[fn]({G, ctx, random, events}, card))
-                        }
-                    }
-                    if(card.effect.onEveryTurnBegin){
-                        card.effect.onEveryTurnBegin.split(' ').map((fn)=>onEveryTurnBeginEffect[fn]({G, ctx, random, events}, card))
-                    }
-                }
-            }
+            next: 'play',
         },
+        play: {
+            onBegin: (props)=>{
+                gameInitialize(props)
+            },
 
-        onEnd: ({G, ctx, random, events}) => {
-            for(let card of G.field){
-                if(card){
-                    if(card.pid===ctx.currentPlayer){
-                        card.exhausted = false
-                        if(card.effect.onTurnEnd){
-                            card.effect.onTurnEnd.split(' ').map((fn)=>onTurnEndEffect[fn]({G, ctx, random, events}, card))
+            moves: {
+                playCard,
+                gameInitialize,
+                action,
+                setTrap,
+            },
+        
+            turn: {
+                order: TurnOrder.CUSTOM_FROM('order'),
+
+                onBegin: ({G, ctx, random, events}) => {
+                    const player = G.player[ctx.currentPlayer];
+        
+                    draw({G, ctx, random, events}, ctx.currentPlayer)
+                    if(player.maxCost<10){
+                        player.maxCost+=1
+                    }
+                    player.cost = player.maxCost
+                    G.turnNum += 1
+                    player.movePt = G.turnNum === 1 ? 1 : 2
+        
+                    if(player.hero === 'green'){
+                        player.trap = 1
+                    }
+        
+                    for(let card of G.field){
+                        if(card){
+                            if(card.pid===ctx.currentPlayer){
+                                if(card.effect.onTurnBegin){
+                                    card.effect.onTurnBegin.split(' ').map((fn)=>onTurnBeginEffect[fn]({G, ctx, random, events}, card))
+                                }
+                            }
+                            if(card.effect.onEveryTurnBegin){
+                                card.effect.onEveryTurnBegin.split(' ').map((fn)=>onEveryTurnBeginEffect[fn]({G, ctx, random, events}, card))
+                            }
                         }
                     }
-                    if(card.effect.onEveryTurnEnd){
-                        card.effect.onEveryTurnEnd.split(' ').map((fn)=>onEveryTurnEndEffect[fn]({G, ctx, random, events}, card))
+                },
+        
+                onEnd: ({G, ctx, random, events}) => {
+                    for(let card of G.field){
+                        if(card){
+                            if(card.pid===ctx.currentPlayer){
+                                card.exhausted = false
+                                if(card.effect.onTurnEnd){
+                                    card.effect.onTurnEnd.split(' ').map((fn)=>onTurnEndEffect[fn]({G, ctx, random, events}, card))
+                                }
+                            }
+                            if(card.effect.onEveryTurnEnd){
+                                card.effect.onEveryTurnEnd.split(' ').map((fn)=>onEveryTurnEndEffect[fn]({G, ctx, random, events}, card))
+                            }
+                        }
                     }
+                    G.effect[ctx.currentPlayer]=[]
                 }
-            }
-            G.effect[ctx.currentPlayer]=[]
+            },
         }
     },
 }

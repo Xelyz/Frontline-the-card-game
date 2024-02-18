@@ -7,7 +7,7 @@ import useSound from 'use-sound';
  * deckbuilder
  * how to play button
  */
-export function CardBoard({G, ctx, moves, playerID, events, isActive}) {
+function GameBoard({G, ctx, moves, playerID, events, isActive}) {
   const opponentID = enemyOf(playerID)
   const [clicked, setClicked] = useState(false)
   const [playCardSound] = useSound('/playCard.flac')
@@ -231,4 +231,56 @@ export function CardBoard({G, ctx, moves, playerID, events, isActive}) {
   </>
 
   return gameBoard
+}
+
+function Deck({G, moves, isActive, playerID}){
+  const [deck, setDeck] = useState(null)
+  const [ready, setReady] = useState(false)
+  function handleChange(e){
+    setDeck(e.target.value)
+  }
+  function submitDeck(){
+    if(isActive){
+      moves.inputDeck(deck, playerID)
+    }else{
+      setReady(true)
+    }
+  }
+  function submitWithDefault(){
+    if(isActive){
+      moves.inputDeck('02020303040405050606070708080b0b1111131315161717181819191b1b', playerID)
+    }else{
+      setDeck('02020303040405050606070708080b0b1111131315161717181819191b1b')
+      setReady(true)
+    }
+  }
+  if(ready){
+    if(isActive){
+      moves.inputDeck(deck, playerID)
+      setReady(false)
+    }
+  }
+  return G.player[playerID].deck || ready?<p className='text-4xl bg-white/40'>Please Wait For Your Opponent</p>:(
+    <div className='absolute w-1/2 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
+      <p className='text-7xl w-full font-[Title] bg-white/20'>Before you Start:</p>
+      <br/>
+      <input
+        type="text"
+        spellCheck="false"
+        className="h-40 w-full text-4xl border-black border-4 bg-slate-100 rounded-xl p-2 placeholder:text-stone-500"
+        autoComplete="off"
+        placeholder='Paste your exported deck here and click GO, or:'
+        value={deck}
+        onChange={handleChange}
+      />
+      <div className='flex justify-between'>
+        <button className='menu-button' onClick={submitDeck}>GO!!!</button>
+        <button className='menu-button' onClick={submitWithDefault}>Use Default Deck</button>
+      </div>
+    </div>
+  )
+}
+
+export function CardBoard(props){
+  return props.ctx.phase==='play'?<GameBoard {...props}/>:<Deck {...props}/>
 }
