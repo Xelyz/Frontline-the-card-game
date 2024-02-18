@@ -339,6 +339,21 @@ export const CARDS=[
         img: 'url(/imgPack/lord_of_spikes.png)',
         color: 'green',
     },
+    {
+        name: "Hell Hound",
+        cost: 3,
+        atk: 3,
+        hp: 2,
+        kind: "minion",
+        desc: "Charge",
+        effect: {},
+        trait: {
+            charge: true,
+        },
+        id: 29,
+        img: 'url(/imgPack/hell_hound.png)',
+        color: 'white',
+    },
 ]
 
 export const DERIVATIVE = [
