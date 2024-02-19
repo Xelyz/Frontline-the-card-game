@@ -188,6 +188,7 @@ class Lobby extends Component {
             return this.getPlayerItem(joinedPlayer);
           })}
         </div>
+        <p className='text-2xl bg-white/40 backdrop-blur-sm rounded-xl'>Do not refresh or return to previous page. If you want to quit the game, close the window instead</p>
       </div>
     );
   };
