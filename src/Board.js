@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './Board.css'
 import { adjacentSquares, enemyOf } from './Game';
 import useSound from 'use-sound';
@@ -152,18 +152,38 @@ function GameBoard({G, ctx, moves, playerID, events, isActive}) {
     board.push(<tr key={i}>{line}</tr>);
   }
 
+  const [timer, setTimer] = useState(null);
+  const timerRef = useRef(); // Add a ref to track the timer
+
+  // Update the ref whenever the timer state changes
   useEffect(() => {
-    const turnIndicator = document.getElementById('turnIndicator')
-    if(isActive){
-      turnIndicator.innerHTML = 'Your Turn'
-    }else{
-      turnIndicator.innerHTML = 'Enemy\'s Turn'
+    timerRef.current = timer;
+  }, [timer]);
+
+  useEffect(() => {
+    const turnIndicator = document.getElementById('turnIndicator');
+    if (isActive) {
+      turnIndicator.innerHTML = 'Your Turn';
+      const newTimer = setTimeout(() => {
+        events.endTurn();
+        setTimer(null);
+      }, 80000);
+      setTimer(newTimer);
+    } else {
+      turnIndicator.innerHTML = "Enemy's Turn";
     }
-    turnIndicator.style.color = 'white'
-    setTimeout(()=>{
-      turnIndicator.style.color = 'transparent'
-    }, 3000)
-  }, [isActive])
+    turnIndicator.style.color = 'white';
+    setTimeout(() => {
+      turnIndicator.style.color = 'transparent';
+    }, 3000);
+
+    // Use the ref for cleanup
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, [isActive]);
 
   //end turn button
   const endTurnButton = <button id='endTurn' onClick={()=>events.endTurn()} className="bg-slate-300 rounded">{ctx.currentPlayer===playerID?"End Turn":"Enemy Turn"}</button>
@@ -260,7 +280,7 @@ function Deck({G, moves, isActive, playerID}){
       setReady(false)
     }
   }
-  return G.player[playerID].deck || ready?<p className='text-4xl bg-white/40'>Please Wait For Your Opponent</p>:(
+  return G.player[playerID].deck || ready?<p className='text-4xl bg-white/20'>Please Wait For Your Opponent</p>:(
     <div className='absolute w-1/2 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
       <p className='text-7xl w-full font-[Title] bg-white/20'>Before you Start:</p>
       <br/>
