@@ -297,6 +297,7 @@ function Deck({G, moves, isActive, playerID}){
         <button className='menu-button' onClick={submitDeck}>GO!!!</button>
         <button className='menu-button' onClick={submitWithDefault}>Use Default Deck</button>
       </div>
+      <p className='text-4xl bg-white/40 backdrop-blur-sm rounded-xl'>Do not refresh or return to previous page. If you want to quit the game, close the window instead</p>
     </div>
   )
 }
