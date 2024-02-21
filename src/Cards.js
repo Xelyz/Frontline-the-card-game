@@ -317,7 +317,7 @@ export const CARDS=[
         atk: 1,
         hp: 1,
         kind: "minion",
-        desc: "Deploy: Heal adjacent ally units 2 hp",
+        desc: "Deploy: Heal adjacent ally units 1 hp",
         effect: {
             onPlay: "healer"
         },
