@@ -12,6 +12,7 @@ function GameBoard({G, ctx, moves, playerID, events, isActive}) {
   const opponentID = enemyOf(playerID)
   const [clicked, setClicked] = useState(false)
   const [playCardSound] = useSound('/playCard.flac')
+  const [autoEndTurnNum, autoEndTurnCounter] = useState(0)
 
   function handleClick(id){
     if(clicked===false){
@@ -166,8 +167,13 @@ function GameBoard({G, ctx, moves, playerID, events, isActive}) {
     if (isActive) {
       turnIndicator.innerHTML = 'Your Turn';
       const newTimer = setTimeout(() => {
-        events.endTurn();
-        setTimer(null);
+        if(autoEndTurnNum<=2){
+          events.endTurn();
+          setTimer(null);
+          autoEndTurnCounter((v)=>v+=1)
+        }else{
+          events.endGame({loser: playerID, winner: enemyOf(playerID)})
+        }
       }, 80000);
       setTimer(newTimer);
     } else {
