@@ -30,11 +30,13 @@ class Lobby extends Component {
     this.state.joined = [];
     this.state.myID = null;
     this.state.userAuthToken = null;
+    this.cleanup = this.cleanup.bind(this)
   }
   componentDidMount() {
+    console.log('mount')
     this.checkRoomStateAndJoin();
     this.interval = setInterval(this.checkRoomState, 1000);
-    window.addEventListener('beforeunload', this.cleanup.bind(this));
+    window.addEventListener('beforeunload', this.cleanup);
   }
   cleanup() {
     console.log('cleaning up');
@@ -42,7 +44,9 @@ class Lobby extends Component {
     clearInterval(this.interval);
   }
   componentWillUnmount() {
-    window.removeEventListener('beforeunload', this.cleanup.bind(this));
+    this.cleanup()
+    console.log('unmount')
+    window.removeEventListener('beforeunload', this.cleanup);
   }
 
   joinRoom = (player_no) => {
