@@ -235,6 +235,8 @@ function GameBoard({G, ctx, moves, playerID, events, isActive}) {
     movePointsE.push(<span className='inline-block rounded-full bg-red-500 h-2 w-2 m-[2px]'></span>)
   }
 
+
+
   const gameBoard = <>
     <div className='fixed rounded-xl Bgfilter backdrop-blur-lg h-[80%] aspect-square left-1/2 -translate-x-1/2 top-[15%]'></div>
     <div id='turnIndicator' className='fixed top-[5%] left-1/2 -translate-x-1/2 text-center text-5xl font-mono duration-1000 transition-colors'></div>
@@ -254,7 +256,6 @@ function GameBoard({G, ctx, moves, playerID, events, isActive}) {
       {handCards}
       {cardData}
     </div>
-    <button className='w-16 h-16 absolute bottom-5 right-5 rounded bg-slate-200 text-2xl border-black border' onClick={()=>{window.open('https://github.com/Xelyz/Frontline-rules/blob/main/ruleBook.md', '_blank')}}>Rules</button>
   </>
 
   return gameBoard
@@ -317,6 +318,54 @@ function GameOver({ctx, playerID}){
   </div>
 }
 
+function Chat({ playerID, chatMessages, sendChatMessage }) {
+  const [msg, setMsg] = useState('');
+  const send = () => {
+    sendChatMessage(msg);
+    setMsg('');
+  };
+
+  let messages = chatMessages.map((value, index) => {
+    const bgPos = value.sender === playerID ? 'bg-black self-end' : 'bg-slate-400 self-start';
+    return (
+      <div key={index} className={`text-2xl m-[6px] text-white rounded-lg p-1 max-w-[80%] w-fit text-wrap ${bgPos}`}>
+        {value.payload}
+      </div>
+    );
+  });
+
+  return (
+    <div id='messages' className='absolute right-0 top-0 h-full w-1/5 py-10'>
+      <div className='h-full w-full border-4 border-black bg-blue-700/50 backdrop-blur flex flex-col relative'>
+        <button className='absolute bg-lime-500 text-2xl px-1 bottom-0 right-0' onClick={send}>-&gt;</button>
+        <div className='text-center text-3xl bg-white/20'>Chat</div>
+        <div className='flex-grow overflow-auto'>
+          <div className='flex flex-col-reverse'>
+            {messages}
+          </div>
+        </div>
+        <input 
+          type='text' 
+          className='bg-white px-2 text-2xl' 
+          placeholder='Talk to your opponent:' 
+          value={msg} 
+          onChange={(e) => setMsg(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              send();
+              e.preventDefault();
+            }
+          }}
+        />
+      </div>
+    </div>
+  );
+}
+
 export function CardBoard(props){
-  return props.ctx.gameover?<GameOver {...props}/>:props.ctx.phase==='play'?<GameBoard {...props}/>:<Deck {...props}/>
+  return <>
+    {props.ctx.gameover?<GameOver {...props}/>:props.ctx.phase==='play'?<GameBoard {...props}/>:<Deck {...props}/>}
+    <Chat {...props}/>
+    <button className='w-16 h-16 absolute bottom-5 left-5 rounded bg-slate-200 text-2xl border-black border' onClick={()=>{window.open('https://github.com/Xelyz/Frontline-rules/blob/main/ruleBook.md', '_blank')}}>Rules</button>
+  </>
 }
