@@ -145,10 +145,10 @@ function gameInitialize({G, ctx, random, events}){
     G.player[1].deck = random.Shuffle(G.player[1].deck)
     minionDeployInitialize({G, ctx, random, events}, {...HEROS.find(hero => hero.color===G.player[0].hero)}, '0', 0)
     minionDeployInitialize({G, ctx, random, events}, {...HEROS.find(hero => hero.color===G.player[1].hero)}, '1', 15)
-    for(let i=0;i<3;i++){
+    for(let i=0;i<4;i++){
         draw({G, ctx, random, events}, G.order[0])
     }
-    for(let i=0;i<4;i++){
+    for(let i=0;i<5;i++){
         draw({G, ctx, random, events}, G.order[1])
     }
 
