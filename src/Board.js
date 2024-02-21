@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import './Board.css'
 import { adjacentSquares, enemyOf } from './Game';
 import useSound from 'use-sound';
+import { useNavigate } from 'react-router';
 
 /**todo
  * deckbuilder
@@ -302,6 +303,14 @@ function Deck({G, moves, isActive, playerID}){
   )
 }
 
+function GameOver({ctx, playerID}){
+  const navigate = useNavigate()
+  return <div className='absolute left-1/2 -translate-x-1/2 text-9xl text-center top-1/2 -translate-y-1/2'>
+    <p className='text-black bg-white/20 font-[Title]'>GAMEOVER<br/>{ctx.gameover.winner===playerID?'YOU':'ENEMY'} WON!</p>
+    <button className='menu-button' onClick={()=>navigate('/')}>Return to Menu</button>
+  </div>
+}
+
 export function CardBoard(props){
-  return props.ctx.phase==='play'?<GameBoard {...props}/>:<Deck {...props}/>
+  return props.ctx.gameover?<GameOver {...props}/>:props.ctx.phase==='play'?<GameBoard {...props}/>:<Deck {...props}/>
 }
