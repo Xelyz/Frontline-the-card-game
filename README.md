@@ -3,7 +3,7 @@
 This project is now closed and unattended because personal project is finished. The repo is created in order to track the updates. It serves as the proof of my work. 
 
 ## How to access
-The game is playable with [render](https://frontline-server.onrender.com) with server deployed on the same location.
+The game is playable with [render](https://frontline-server.onrender.com) with server deployed on the same location. Website: https://frontline-server.onrender.com
 
 ## Developed using:
 - boardgame.io
